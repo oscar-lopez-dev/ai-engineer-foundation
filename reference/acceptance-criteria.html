@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reference — Criteria that can fail</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>Criteria that can fail</h1>
+      <p class="lede">One gate, three repairs, and the words to use. From <a href="../lessons/0006-criteria-that-can-fail.html">lesson 0006</a>.</p>
+    </header>
+
+    <p class="bigq">What would I observe if this were false?</p>
+
+    <h2>The three checks</h2>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Check</th><th>Ask</th><th>Fails when</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Observable</td>
+          <td>Who sees it, and where?</td>
+          <td>It describes construction (a table, an index, a client) rather than behaviour.</td>
+        </tr>
+        <tr>
+          <td>Measured</td>
+          <td>What number or named set pins the quality word?</td>
+          <td>An adjective is doing the work: fast, accurate, graceful, relevant, robust.</td>
+        </tr>
+        <tr>
+          <td>Decidable now</td>
+          <td>Could I say today which outcome counts as a fail?</td>
+          <td>Nobody knows the right outcome. It is a question, not a criterion.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The three repairs</h2>
+
+    <ol>
+      <li><strong>Measure it.</strong> Replace the adjective with a number, a percentile, or a named set. The number is a decision you are making — that is the value, not a side effect.</li>
+      <li><strong>Demote it.</strong> If the outcome is unknown, write it down as a question and either answer it or bound the slice to exclude it. Never hand a question to an agent as a criterion.</li>
+      <li><strong>Drop it.</strong> If it describes how to build rather than what to observe, it is a design note. It can be satisfied while the feature is broken.</li>
+    </ol>
+
+    <h2>Adjective → fit criterion</h2>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Quality word</th><th>What to pin down</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Fast</td><td>Which operation, measured where, at which percentile, under what load.</td></tr>
+        <tr><td>Accurate</td><td>Against which review set, with which allowed outcomes, and what must never appear.</td></tr>
+        <tr><td>Graceful</td><td>Which failure, after how long, what the person sees, what gets logged, what is preserved.</td></tr>
+        <tr><td>Scalable / large</td><td>The size and shape at the boundary, plus the behaviour just past it.</td></tr>
+        <tr><td>Relevant / intuitive</td><td>Usually a question first. Find the rule behind it before inventing a number.</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Triage: rule, example, question</h2>
+
+    <ul>
+      <li><strong>Rule</strong> — holds across cases. Belongs in the criteria; pin it with one or two examples.</li>
+      <li><strong>Example</strong> — one concrete case with a known outcome. This is where your <a href="one-failing-test.html">first failing test</a> comes from. Given / When / Then once the outcome is known.</li>
+      <li><strong>Question</strong> — outcome unknown to everyone present. Answer it, defer it, or exclude it.</li>
+    </ul>
+
+    <p class="sidenote">Map shape reads as a signal: many questions means the story is not understood; many rules means it is too big and wants slicing.</p>
+
+    <h2>Enough, not exhaustive</h2>
+
+    <p>Choose <strong>key examples</strong> at the boundaries. If the limit is 25 MB, 24.9 and 25.1 carry the information; the fifteen sizes in between carry none. Exploding examples usually mean a missing concept in the model, not a missing test case. Volume creates an illusion of precision.</p>
+
+    <h2>To hand an agent</h2>
+
+    <pre>Acceptance criteria (each must be falsifiable):
+- &lt;observable behaviour, with the number that decides it&gt;
+- &lt;the failure case: what happens, after how long, what the user sees&gt;
+
+Open questions — do not resolve these yourself, ask me:
+- &lt;the case where nobody knows the right outcome&gt;
+
+Out of scope for this slice:
+- &lt;deferred rules&gt;</pre>
+
+    <p>If the agent reports done and you cannot point at a criterion it failed, you have not reviewed it. That is the subject of the next stage.</p>
+
+    <footer class="meta">
+      Sources: Robertson &amp; Robertson (fit criteria, Quality Gateway) · Wynne (example mapping) · Adzic (key examples) · Fowler (Given–When–Then) · Wake (INVEST: testable). Full entries in <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vertical slice — reference</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>Vertical slice</h1>
+      <p class="lede">A thin path a user can walk, cutting through every layer that path needs — and nothing else.</p>
+    </header>
+
+    <h2>Definition</h2>
+    <p>A <strong>vertical slice</strong> is a narrow, complete path from a person’s intent to an observable result. It touches every technical layer that path requires (UI, API, data, and any AI call), but only as much of each layer as the path needs.</p>
+    <p class="sidenote">Wake’s cake: you serve a slice through the layers, not a whole layer of sponge. <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">INVEST, 2003</a>.</p>
+
+    <h2>Not this</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Horizontal layer</th>
+          <th>Vertical slice</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Create the documents table</td>
+          <td>Employee asks, sees an answer from one PDF</td>
+        </tr>
+        <tr>
+          <td>Add <code>POST /api/ask</code></td>
+          <td>Unauthenticated caller is refused</td>
+        </tr>
+        <tr>
+          <td>Build <code>AskForm.tsx</code></td>
+          <td>No relevant passage → “I don’t know”</td>
+        </tr>
+        <tr>
+          <td>Wire the OpenAI client</td>
+          <td>One question, one document, one answer</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Done when</h2>
+    <ul>
+      <li>A person can walk the path (or a test can, at a public seam).</li>
+      <li>Acceptance criteria are observations, not “code exists.”</li>
+      <li>The slice is bounded: one actor, one success, one named failure or out-of-scope.</li>
+      <li>An agent could finish it in one context window without inventing the rest of the product.</li>
+    </ul>
+
+    <h2>Related</h2>
+    <ul>
+      <li><strong>Tracer vs prototype</strong> — <a href="tracer-bullet.html">reference</a>: a slice you keep vs reconnaissance you throw. <a href="../lessons/0002-tracer-not-prototype.html">Lesson 0002</a>.</li>
+      <li><strong>Walking skeleton</strong> (Cockburn): the thinnest first slice that links the main parts so architecture and function can evolve together. Later.</li>
+      <li><strong>Vertical Slice Architecture</strong> (Bogard): how folders are organised. Different idea. Do not mix the names.</li>
+    </ul>
+
+    <h2>Agent prompt shape</h2>
+    <pre>Build this slice only:
+[who] can [do X] and [see Y],
+or [named failure].
+Out of scope: [list].
+Done when: [observable checks].</pre>
+
+    <footer class="meta">
+      From <a href="../lessons/0001-vertical-slice-not-layer.html">Lesson 0001</a>.
+      Also: <a href="glossary.html">glossary</a>.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

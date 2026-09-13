@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tracer vs prototype — reference</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>Tracer vs prototype</h1>
+      <p class="lede">Two kinds of small. One dies after the lesson. One is the product, skeletally thin.</p>
+    </header>
+
+    <h2>Definitions</h2>
+    <p>A <strong>prototype</strong> is throwaway code that answers one question. You keep the verdict. You do not keep the code on main.</p>
+    <p>A <strong>tracer</strong> is a lean, complete path through the real product — UI, API, data, and whatever else that path needs. You keep it and thicken it. Feedback comes from firing under real conditions, not from specifying the system to death.</p>
+    <p class="sidenote">Hunt &amp; Thomas: a prototype is a western-movie facade; a tracer is a thin line of execution you can give a user. <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Artima interview, 2003</a>.</p>
+
+    <h2>Which unknown</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Unknown</th>
+          <th>Tool</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Can the model ground in this PDF?</td>
+          <td>Prototype. A script. Verdict only.</td>
+        </tr>
+        <tr>
+          <td>Can an employee walk a path in our stack?</td>
+          <td>Tracer. Real page, API, SQL. Keep it.</td>
+        </tr>
+        <tr>
+          <td>What should the empty state look like?</td>
+          <td>Prototype. Throw the mock.</td>
+        </tr>
+        <tr>
+          <td>Does “I don’t know” show on screen via the API?</td>
+          <td>Tracer. Even a stub answer counts if the path is real.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Not this</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Looks small, isn’t a tracer</th>
+          <th>A tracer you keep</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Notebook that prints one model answer</td>
+          <td>Employee sees one answer on the product page</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/ask</code> with no UI — “wire later”</td>
+          <td>The same ask, on screen, through that API</td>
+        </tr>
+        <tr>
+          <td>Upload, history, citations, admin, RAG</td>
+          <td>One person, one PDF, one question, one bound</td>
+        </tr>
+        <tr>
+          <td>A <a href="vertical-slice.html">horizontal layer</a></td>
+          <td>A <a href="vertical-slice.html">vertical slice</a> that stays in the product</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Done when</h2>
+    <ul>
+      <li>You can say which unknown you are reducing.</li>
+      <li>If prototype: the question is written down; the code is marked throwaway; the verdict is captured.</li>
+      <li>If tracer: a person (or a test at a public seam) can walk the path; you would merge it.</li>
+      <li>An agent was told which of the two you wanted. It will otherwise polish a facade and call it shipped.</li>
+    </ul>
+
+    <h2>Agent prompt shape</h2>
+    <pre>This is a TRACER (keep it):
+[who] can [do X] and [see Y], or [named failure].
+Out of scope: [list].
+Done when: [observable checks].
+
+This is a PROTOTYPE (throw it):
+Question: [one question].
+Do not put this on main. Capture the verdict: [where].</pre>
+
+    <h2>Related, later</h2>
+    <ul>
+      <li><strong>Walking skeleton</strong> (Cockburn): the thinnest first tracer that links the main parts so architecture and function can evolve together. Later.</li>
+      <li><strong>One failing test</strong>: the first coding move on a tracer you keep. See <a href="one-failing-test.html">one failing test</a> and <a href="../lessons/0003-one-failing-test.html">lesson 0003</a>.</li>
+      <li><strong>Vertical slice</strong>: the unit of delivery. A tracer is a slice you keep. A prototype is not a slice of the product. See <a href="vertical-slice.html">vertical slice</a>.</li>
+    </ul>
+
+    <footer class="meta">
+      From <a href="../lessons/0002-tracer-not-prototype.html">Lesson 0002</a>.
+      Prior: <a href="vertical-slice.html">vertical slice</a> · <a href="glossary.html">glossary</a>.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

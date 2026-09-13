@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0004 — Only enough code to pass</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0004 · Engineering with coding agents</p>
+      <h1>Only enough code to pass</h1>
+      <p class="lede">You already have one failing test of the tracer. The next coding step is to change the product so that this test passes — and only this test. Do not implement the rest of the list. Do not edit the test so it matches whatever you built.</p>
+    </header>
+
+    <p>You can already write <a href="0003-one-failing-test.html">one failing test</a> of a <a href="0002-tracer-not-prototype.html">tracer you would keep</a>. The next skill is what happens once that test is red.</p>
+    <p>Two habits get in the way. In ticket-guided work, a failing test is treated as a green light to build the rest of the feature. Coding agents do the same, and they have a second cheat: they change the test until it is green. In both cases you no longer have a check of observed behaviour. You have a report that says pass.</p>
+
+    <div class="callout">
+      <strong>Correct this</strong>
+      Wrong: the test is red, so build the tracer — or edit the test until it is green.<br>
+      Right: write only the product code this test requires. Leave the test alone. Leave the rest of the list as notes.
+    </div>
+
+    <p>This still serves your mission. You need to review your own work and an agent’s work against tests you can trust. If the pass includes upload, the real model, and citations, those parts were never forced by a failing test. If the pass was made by deleting an assertion, the test can no longer catch a mistake. Either way you cannot say what is safe to ship.</p>
+
+    <h2 id="make-it-pass">Make this test pass</h2>
+    <p>Kent Beck’s next step after one concrete test is: change the system so that this test passes, along with any tests you already had. If you discover a new case while you do that, add it to the <a href="../reference/glossary.html">test list</a>. Do not turn it into a test yet, and do not implement it yet.</p>
+    <blockquote>
+      Mistake: delete assertions so the test pretends to pass. Make it pass for real.<br>
+      Mistake: copying actual, computed values &amp; pasting them into the expected values of the test. That defeats double checking, which creates much of the validation value of TDD.
+      <cite><a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD,” 2023</a></cite>
+    </blockquote>
+    <p>A third named mistake is mixing tidy-up into this step. Make it pass first. Cleaning the design is a later lesson.</p>
+    <p>Matt Pocock’s rule for the same step, written for coding agents: write only enough code to pass that test. Do not anticipate future tests or add speculative features. When an agent is short of context, it may rewrite the test instead of writing the path, and still report a pass. That is the same cheat Beck names. You prevent it by refusing to let the test file change during green.</p>
+    <p class="sidenote">Beck uses <em>green</em> for “the test now passes.” Until you have his book, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a> is the free first-party source. Fowler notes that skipping the later tidy-up is a common way to get the loop wrong — that is for a later lesson. <a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a>, Fowler.</p>
+
+    <figure class="diagram" aria-label="Building the rest of the feature versus only the code this test needs">
+      <svg viewBox="0 0 640 250" role="img">
+        <title>The rest of the feature after one red test, beside only enough code to pass that test</title>
+        <text x="8" y="22" fill="#5c564c" font-size="13" font-family="system-ui">The rest of the feature</text>
+        <rect x="8" y="36" width="280" height="36" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="148" y="59" text-anchor="middle" font-size="13" font-family="Georgia, serif">OpenAI client</text>
+        <rect x="8" y="76" width="280" height="36" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="148" y="99" text-anchor="middle" font-size="13" font-family="Georgia, serif">upload · citations · history</text>
+        <rect x="8" y="116" width="280" height="36" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="148" y="139" text-anchor="middle" font-size="13" font-family="Georgia, serif">and the one red test happens to pass</text>
+        <text x="148" y="190" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">code the test did not ask for</text>
+        <text x="148" y="212" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">or: the test file was edited</text>
+
+        <text x="340" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Only this test</text>
+        <rect x="340" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="480" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">same test, unchanged</text>
+        <rect x="340" y="84" width="280" height="72" fill="#a63d2f" fill-opacity="0.28" stroke="#a63d2f" stroke-width="2"/>
+        <text x="480" y="126" text-anchor="middle" font-size="14" font-family="Georgia, serif">stub returns “I don’t know”</text>
+        <text x="480" y="190" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">only the code this test requires</text>
+        <text x="480" y="212" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">upload and the model stay on the list</text>
+      </svg>
+      <figcaption>The red band is the product change this test forces. Everything else is still a note. Editing the test is not a pass.</figcaption>
+    </figure>
+
+    <h2>Handbook Ask, three ways to go green</h2>
+    <p>Use the same failing test as before: <code>POST /api/ask</code> with a question about the seeded PDF returns HTTP 200 and a body containing “I don’t know.” You have watched it fail. Compare three ways to make it pass:</p>
+    <ol>
+      <li>Implement upload, the OpenAI client, citations, and history. The one test will pass, along with half a product no test forced.</li>
+      <li>Delete <code>Assert.Contains("I don't know", body)</code>, or paste whatever body the code actually returned into the expected value.</li>
+      <li>Add a stub handler that returns “I don’t know.” Leave the test file alone. Run the same test. It should pass. Upload, citations, and the real model stay on the list.</li>
+    </ol>
+    <p>Option 1 writes code the test did not ask for. You have not observed upload or the real model. An agent that does this will look busy and still leave you unable to say what is safe.</p>
+    <p>Option 2 is the mistake Beck names. Deleting the assertion makes the test pretend to pass. Pasting actual output into the expected value means the test will accept a mistake as correct. An agent short of context often does this instead of writing the path.</p>
+    <p>Option 3 is the loop for this lesson. The test still says what you chose. The product now does that one thing. The <a href="0002-tracer-not-prototype.html">stub from lesson 0002</a> is this pass: the model is not wired yet because this test does not require it.</p>
+    <pre>app.MapPost("/api/ask", (AskRequest req) =&gt;
+    Results.Ok(new { answer = "I don't know" }));</pre>
+    <p>Lesson 0002 named a tracer you would keep: the page, the API, SQL, and a stubbed model. That is still the path you are growing. This test does not yet force every part of it. SQL, the page, and auth wait for a test that fails without them. The tracer is the destination. The first green is not the whole tracer.</p>
+    <p class="sidenote"><a href="../reference/only-enough-to-pass.html">Reference: only enough to pass</a> · <a href="../reference/one-failing-test.html">one failing test</a> · <a href="../reference/glossary.html">glossary</a>.</p>
+
+    <h2>Practice: classify</h2>
+    <p>For each way of going green, choose whether it is the rest of the feature, a change to the test, or only the code this test needs. You will get feedback immediately.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-classify data-kind="extra" data-why="The test only asks for 200 and “I don’t know.” Upload, OpenAI, and citations were still on the list. Implement them when they have their own failing test.">
+        <p class="lab-prompt">The test is red. Implement upload, the OpenAI client, citations, and history so the product is “real.”</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="extra">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="cheat">Change the test to pass</button>
+          <button type="button" class="kind" data-kind="enough">Only the code this test needs</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="cheat" data-why="Beck: do not delete assertions so the test pretends to pass. The assertion is the check. Remove it and you no longer have a test of the tracer.">
+        <p class="lab-prompt">The test is red. Delete the assertion that the body contains “I don’t know,” so a 200 is enough.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="extra">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="cheat">Change the test to pass</button>
+          <button type="button" class="kind" data-kind="enough">Only the code this test needs</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="enough" data-why="A stub that returns the string the test already named is enough. The test file does not change. Upload and the real model stay on the list.">
+        <p class="lab-prompt">The test is red. Add a stub that returns “I don’t know.” Leave the test alone. Upload stays on the list.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="extra">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="cheat">Change the test to pass</button>
+          <button type="button" class="kind" data-kind="enough">Only the code this test needs</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="cheat" data-why="Beck: pasting actual output into the expected value defeats the check. The test will now accept a mistake as correct. An agent short of context often does this.">
+        <p class="lab-prompt">The test failed with body <code>"error"</code>. Paste <code>"error"</code> into the expected value so it passes.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="extra">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="cheat">Change the test to pass</button>
+          <button type="button" class="kind" data-kind="enough">Only the code this test needs</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <h2>Practice: write the pass</h2>
+    <p>Here is a prompt you might still give an agent after lesson 0003:</p>
+    <p><em>The test is red. Build the tracer: wire OpenAI, add upload and citations, and make it pass.</em></p>
+    <p>Rewrite it so the agent is asked for <em>only enough product code to pass this test</em>. Say that the test file must not change. Name the stubbed result. Say which cases stay on the list and are not implemented yet.</p>
+
+    <div class="lab-rewrite" data-score-rewrite>
+      <textarea class="rewrite" placeholder="Only enough code: a stub POST /api/ask that returns … Do not edit the test. Still on the list: …"></textarea>
+      <button type="button" class="primary">Check the pass</button>
+      <ul class="checks"></ul>
+      <script type="application/json" data-rewrite-checks>
+        [
+          {
+            "minLength": 40,
+            "pass": "You described a complete pass.",
+            "fail": "Write one or two sentences: what product code to add, and what to leave alone."
+          },
+          {
+            "must": "\\b(only|enough|smallest|minimal|stub)\\b",
+            "pass": "You kept the product change small.",
+            "fail": "Say that this is only enough code, a stub, or the smallest pass."
+          },
+          {
+            "must": "do not (edit|change|touch|rewrite)|without (changing|editing)|leave the test|test (file )?unchanged|do not (alter|modify) the test",
+            "pass": "You forbade editing the test.",
+            "fail": "Say that the test file must not change."
+          },
+          {
+            "must": "don't know|do not know|i don't know|i do not know",
+            "pass": "The pass matches the tracer the test already named.",
+            "fail": "The product should return “I don’t know” — the value the test already asserts."
+          },
+          {
+            "must": "list|later|out of scope|not yet|not implement|leave .* on|still on",
+            "pass": "The other cases stayed on the list.",
+            "fail": "Say what is still on the list (upload, citations, real model) and is not implemented yet."
+          },
+          {
+            "mustNot": "suite|comprehensive|all tests|every test|full coverage",
+            "pass": "You did not ask for a full suite.",
+            "fail": "A full suite is many tests at once. Make this one test pass."
+          },
+          {
+            "mustNot": "delete the assert|paste the (actual|output|body)|remove the assert",
+            "pass": "You did not cheat the test.",
+            "fail": "Do not delete assertions or paste actual output into expected values."
+          },
+          {
+            "mustNot": "notebook|colab|scratch script",
+            "pass": "This pass is on the product path, not a notebook.",
+            "fail": "A notebook is a prototype. Pass the tracer you would keep."
+          }
+        ]
+      </script>
+    </div>
+
+    <h2>Retrieve</h2>
+    <p>Answer from memory. Do not look back at the explanations above. The two choices in each question are the same length on purpose, so length is not a hint.</p>
+
+    <div class="quiz">
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Pocock: only enough code to pass that test. Do not anticipate future tests. The rest of the tracer waits for its own failing test.">
+        <p class="quiz-stem">Once the failing test is red, write:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Code for this test alone</button>
+          <button type="button" class="choice" data-choice="1">Code for the whole tracer</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Beck: pasting actual, computed values into the expected values defeats the check. The test will accept a mistake as correct.">
+        <p class="quiz-stem">Pasting program output into expected values:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Defeats the check you wanted</button>
+          <button type="button" class="choice" data-choice="1">Creates the check you wanted</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="From lesson 0002: a stub on the real UI→API path is still a tracer you keep. The real model waits. From this lesson: that stub is also the smallest pass for the first test.">
+        <p class="quiz-stem">A stub that returns I don’t know on the real API is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">A tracer you keep and thicken</button>
+          <button type="button" class="choice" data-choice="1">A prototype you throw when done</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+    <p class="sidenote">If you missed one, that is expected. Retrieval is how the idea sticks. Re-read <a href="#make-it-pass">make this test pass</a>, then try the questions again tomorrow rather than immediately.</p>
+
+    <h2>Read this</h2>
+    <p>Primary source: <a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD.”</a> Read step 3, “Make it Pass,” including the mistakes he names. The important distinction: the test stays the check you wrote; the product changes until that check is true.</p>
+    <p>Then, because you will use coding agents: <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">Matt Pocock, “My Skill Makes Claude Code GREAT At TDD.”</a> Same smallest-pass rule, applied to models that otherwise implement the rest of the feature, or rewrite the test when context runs low. When you prompt an agent, you can use his <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a> skill and say: this test is red; only enough product code; do not edit the test.</p>
+
+    <div class="win">
+      <h2>You should now be able to</h2>
+      <p>Look at a proposed green step and classify it as: the rest of the feature (code the test did not ask for), a change to the test (a pretend pass), or only the code this test needs. When you prompt an agent, forbid editing the test, and keep the other cases on the list. Keep the <a href="../reference/only-enough-to-pass.html">reference sheet</a> next to the next ticket you write.</p>
+    </div>
+
+    <div class="teacher">
+      <h2>Ask your teacher</h2>
+      <p>This agent is the teacher. If any part of this lesson is unclear, ask. You can paste your pass rewrite, or a “the test is red, now build it” prompt you want checked.</p>
+    </div>
+
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Beck, K. (2023). <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a> — especially “Make it Pass.”</li>
+      <li>Beck, K. <em>Test-Driven Development: By Example</em>. The red–green–refactor loop — cite the book when you have a copy; Canon TDD is the free stand-in.</li>
+      <li>Fowler, M. (updated 2023). <a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a> — skipping the later tidy-up is a common failure; that step is later.</li>
+      <li>Pocock, M. <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">My Skill Makes Claude Code GREAT At TDD</a>. Also <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a>.</li>
+      <li>The stubbed path is the tracer from <a href="0002-tracer-not-prototype.html">lesson 0002</a>, and the failing test is from <a href="0003-one-failing-test.html">lesson 0003</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      Tied to <a href="../MISSION.md">the mission</a>: a tracer whose tests you can trust, so agent-delivered software is reviewable.
+      Prior: <a href="0003-one-failing-test.html">0003 — one failing test, not a suite</a>.
+      Next: <a href="0005-next-test-not-the-rest.html">0005 — the next test, not the rest of the list</a>.
+      Catalogue: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/slice-lab.js"></script>
+  <script src="../assets/score-rewrite.js"></script>
+</body>
+</html>

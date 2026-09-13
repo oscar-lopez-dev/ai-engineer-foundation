@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>One failing test — reference</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>One failing test</h1>
+      <p class="lede">The first coding step on a tracer. A list of cases is not a suite of tests. The test must fail before you write product code.</p>
+    </header>
+
+    <h2>The loop (this lesson)</h2>
+    <ol>
+      <li>You already have a <a href="tracer-bullet.html">tracer</a> you would keep.</li>
+      <li>Jot a <strong>test list</strong> — cases, not code. (Beck’s step 1.)</li>
+      <li>Turn <em>exactly one</em> item into a runnable test at a public seam.</li>
+      <li>Watch it fail for a real reason (no route, wrong body) — not because the test is broken.</li>
+      <li>Write only enough product code to pass that test. (<a href="../lessons/0004-only-enough-to-pass.html">Lesson 0004</a> practises this step.)</li>
+      <li>Then write the <a href="next-failing-test.html">next failing test</a> of the tracer. (<a href="../lessons/0005-next-test-not-the-rest.html">Lesson 0005</a>.)</li>
+    </ol>
+    <p class="sidenote">Beck, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a>. Cleaning up the code after the test passes is a later lesson. Mocking internal collaborators is also later.</p>
+
+    <h2>Which first move</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Move</th>
+          <th>What it verifies</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Implement, then add tests</td>
+          <td>A record of whatever was already built. You never confirmed that the test can fail.</td>
+        </tr>
+        <tr>
+          <td>Write every test, then implement</td>
+          <td>Imagined behaviour. Speculative tests break when the first pass teaches you something.</td>
+        </tr>
+        <tr>
+          <td>One failing test of the tracer, then code</td>
+          <td>Observed behaviour. The next case stays on the list.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The first test looks like</h2>
+    <ul>
+      <li>Names the tracer: who / what / the observation (“I don’t know”, 200, refused).</li>
+      <li>Calls a <strong>public seam</strong> (HTTP API or the page), not a private method.</li>
+      <li>Expected values are literals you chose, not values pasted from a passing run.</li>
+      <li>Fails before the product code exists.</li>
+    </ul>
+    <pre>[Fact]
+public async Task Ask_seeded_pdf_says_i_dont_know()
+{
+    var res = await client.PostAsJsonAsync(
+        "/api/ask", new { question = "What is the leave policy?" });
+    var body = await res.Content.ReadAsStringAsync();
+    Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+    Assert.Contains("I don't know", body);
+}</pre>
+
+    <h2>Done when</h2>
+    <ul>
+      <li>You can point at the one test and say how it failed before you wrote the product code.</li>
+      <li>The implementation you (or the agent) wrote is the smallest path that makes that test pass.</li>
+      <li>Other cases are still a list, not test files.</li>
+      <li>An agent was told: one failing test of this tracer, no suite, do not implement first.</li>
+    </ul>
+
+    <h2>Agent prompt shape</h2>
+    <pre>This is a TRACER (keep it):
+[who] can [do X] and [see Y], or [named failure].
+
+TDD — do not implement yet:
+1. Write ONE failing test of that path at [seam].
+2. Show me the red output.
+3. Then write only enough code to pass it.
+Still on the list (not tests yet): [cases].</pre>
+
+    <h2>Related, later</h2>
+    <ul>
+      <li><strong>Only enough code to pass</strong>: the product change after the test is red. See <a href="only-enough-to-pass.html">only enough to pass</a> and <a href="../lessons/0004-only-enough-to-pass.html">lesson 0004</a>.</li>
+      <li><strong>The next failing test</strong>: after that pass, one new failing check of the tracer. See <a href="next-failing-test.html">the next failing test</a> and <a href="../lessons/0005-next-test-not-the-rest.html">lesson 0005</a>.</li>
+      <li><strong>Refactor</strong> (Beck treats this as optional in Canon TDD; Fowler treats skipping it as a common failure; Pocock’s <code>/tdd</code> parks it in review). After you can cycle red → green → next test.</li>
+      <li><strong>Seams and mocks</strong>: test through the public interface; do not mock internal collaborators. Later.</li>
+      <li><strong>Spec templates</strong> (<code>/to-spec</code>): the written behaviour that the test list comes from. Later.</li>
+    </ul>
+
+    <footer class="meta">
+      From <a href="../lessons/0003-one-failing-test.html">Lesson 0003</a>.
+      Next: <a href="only-enough-to-pass.html">only enough to pass</a>.
+      Prior: <a href="tracer-bullet.html">tracer vs prototype</a> · <a href="vertical-slice.html">vertical slice</a> · <a href="glossary.html">glossary</a>.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

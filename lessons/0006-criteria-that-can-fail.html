@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0006 — Criteria that can fail</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0006 · Specifying and reviewing</p>
+      <h1>Criteria that can fail</h1>
+      <p class="lede">A piece of work is only reviewable if someone could have failed it. This lesson is about one question you can ask of any acceptance criterion, and what to do when the answer is “I don’t know yet.”</p>
+    </header>
+
+    <p>Here are five acceptance criteria from a ticket for Handbook Ask. An employee uploads a policy PDF, asks a question about it, and gets an answer that cites the document. The criteria read like criteria. They would pass most refinement meetings.</p>
+
+    <ul>
+      <li>Answers must be accurate.</li>
+      <li>The page should feel fast.</li>
+      <li>Errors are handled gracefully.</li>
+      <li>Citations should be relevant.</li>
+      <li>Large PDFs are supported.</li>
+    </ul>
+
+    <p>Now imagine handing that ticket to a coding agent, and imagine the agent comes back and says it is done. Which of those five could you use to disagree? Not “disagree” as a matter of taste — disagree in a way the agent, or a colleague, would have to accept.</p>
+
+    <p>None of them. Every one is written so that it cannot be failed. That is the problem, and it is not a problem of effort or seniority. It is a property of the sentence.</p>
+
+    <h2 id="the-question">The one question</h2>
+
+    <p>Suzanne and James Robertson, whose Volere approach exists to catch exactly this, attach a <strong>fit criterion</strong> to every requirement before it is allowed into a specification. Their definition is worth memorising:</p>
+
+    <blockquote>
+      The fit criterion is a measurement of the requirement that makes it both understandable and testable.
+      <cite><a href="https://ptgmedia.pearsoncmg.com/images/0321419499/samplechapter/robertson_ch02.pdf">Suzanne Robertson &amp; James Robertson, <em>Mastering the Requirements Process</em>, ch. 2</a></cite>
+    </blockquote>
+
+    <p>They also give the reason a requirements analyst cares, in a line that could be about reviewing an agent’s pull request: “If I can’t put a measurement to it, then I can never tell if we are building the product the client really needs.” Their book opens the same chapter with the requirement every engineer has received at some point — <em>I want it easy enough so my mother could use it</em>.</p>
+
+    <p>So the question to ask of any criterion is not “is this clear?” Clear is a feeling, and adjectives feel clear. The question is:</p>
+
+    <p class="bigq">What would I observe if this were false?</p>
+
+    <p>If you can answer it in one sentence, you have a criterion. If you cannot, you have an intention — worth keeping, but not yet something anyone can be held to. Notice the question is about <em>failure</em>, not success. Success is easy to imagine and easy to fake. Failure is what you need to be able to name, because naming it is how you say “not done” without arguing about taste.</p>
+
+    <p class="sidenote">The Robertsons put a <strong>Quality Gateway</strong> in front of the specification: a single point where each requirement is checked for testability, among other qualities, before it is allowed downstream. The gateway is usually two people, one of whom is a tester. If you work with agents, you are both of those people.</p>
+
+    <h2>A measurement, not an adjective</h2>
+
+    <p>Most unfalsifiable criteria fail in the same way: a quality word is doing the work, and the quality word has no number, no set, and no observer attached. The fix is mechanical. Take the adjective, ask what it would take to measure it, and write that instead.</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>As written</th><th>With a fit criterion</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Answers must be accurate.</td>
+          <td>For each of the 12 questions in the review set, the answer either quotes the uploaded policy or says “I don’t know”. No answer states a fact that is not in the policy.</td>
+        </tr>
+        <tr>
+          <td>The page should feel fast.</td>
+          <td>On staging, with 50 PDFs loaded, the answer starts appearing within 2 seconds for 19 of 20 consecutive questions.</td>
+        </tr>
+        <tr>
+          <td>Errors are handled gracefully.</td>
+          <td>If the model call has not responded after 10 seconds, the page shows “Answer unavailable — try again”, the question stays in the box, and the failure is logged with the question id.</td>
+        </tr>
+        <tr>
+          <td>Large PDFs are supported.</td>
+          <td>A 300-page, 24 MB PDF becomes answerable within 5 minutes of upload. A file over 25 MB is rejected with a message naming the limit.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Two things to notice. First, none of these say how to build anything — no chunk size, no queue, no model name. A fit criterion constrains the observable result, which is exactly what leaves an agent free to choose an implementation and leaves you free to reject the outcome. Second, the numbers are chosen, not discovered. Two seconds and 25 MB are decisions someone made. Writing the criterion is what forced the decision into the open, where it can be argued about now rather than in production.</p>
+
+    <p>That is the deeper reason to do this before delegating: the measurement is not paperwork about the work, it <em>is</em> a piece of the design.</p>
+
+    <h2>Sometimes you don’t have a criterion. You have a question.</h2>
+
+    <p>The fifth one on the list was “citations should be relevant”, and it is a different animal from “fast”. You can convert <em>fast</em> into a number by deciding. But nobody in the room yet knows what makes a citation relevant, so any number you invent would be theatre.</p>
+
+    <p>Matt Wynne’s Example Mapping gives the move here. In a short conversation you sort what is said into rules, examples, and questions — and he draws the line precisely:</p>
+
+    <blockquote>
+      When the outcome (Then) is unclear, you don’t have an example, you have a question.
+      <cite><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Matt Wynne, “Introducing Example Mapping,” Cucumber</a></cite>
+    </blockquote>
+
+    <p>This matters more with agents than it did with people. A colleague who hits an unclear outcome asks you. An agent resolves the ambiguity silently, picks something plausible, and reports success — and now the decision has been made by a system that will not remember making it. So the discipline is to keep questions visibly separate from criteria instead of quietly upgrading them.</p>
+
+    <table class="compare">
+      <thead>
+        <tr><th>Kind</th><th>What it is</th><th>What it means for the ticket</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Rule</td>
+          <td>A constraint that holds across cases: every answer shows the policy title and page number.</td>
+          <td>Belongs in the criteria. Needs one or two examples to pin it down.</td>
+        </tr>
+        <tr>
+          <td>Example</td>
+          <td>One concrete case with a known outcome: asking about parental leave returns a quote from page 14.</td>
+          <td>This is what your first test comes from. See <a href="0003-one-failing-test.html">lesson 0003</a>.</td>
+        </tr>
+        <tr>
+          <td>Question</td>
+          <td>A case where nobody knows the right outcome: what counts as a relevant citation when two policies conflict?</td>
+          <td>Do not delegate it. Answer it, or bound the slice to exclude it.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>Wynne also reads the shape of the map as a signal: lots of questions means you do not understand the story yet; lots of rules means it is too big and wants slicing. Both are the same judgement you practised in <a href="0001-vertical-slice-not-layer.html">lesson 0001</a>, arriving from a different direction.</p>
+
+    <h2>Enough examples, not all of them</h2>
+
+    <p>There is an opposite failure, and it is the one you are more likely to commit once you get good at this — especially with an agent that will happily accept forty scenarios in a prompt. Gojko Adzic, writing about acceptance criteria stuffed with every variation for the sake of completeness, names what goes wrong:</p>
+
+    <blockquote>
+      The overwhelming amount of data makes everyone feel secure that someone has the entire picture, but in fact people can easily understand things differently… This can lead to an illusion of precision and completeness.
+      <cite><a href="https://gojko.net/2014/05/05/focus-on-key-examples/">Gojko Adzic, “Focus on key examples”</a></cite>
+    </blockquote>
+
+    <p>His alternative is <strong>key examples</strong>: a small number of simple cases, chosen at the boundaries, that a human can hold in their head and criticise. If the threshold is 25 MB, the examples that carry information are 24.9 MB and 25.1 MB — not fifteen file sizes in between. Adzic’s stronger claim is that when your examples explode in number, the specification is usually written at the wrong level of abstraction, and a business concept is missing from your model. That is a design smell surfacing in prose before it reaches code.</p>
+
+    <p class="sidenote">Adzic’s heuristics for a criterion that still reads well a year later: self-explanatory, focused, a specification rather than a script, in domain language, and about behaviour rather than software design. See <a href="https://gojko.net/2010/06/16/anatomy-of-a-good-acceptance-test/">“Anatomy of a good acceptance test”</a>.</p>
+
+    <h2>The check</h2>
+
+    <p>Five criteria. For each one, decide whether it could be failed by someone who wanted to. You will get the reasoning immediately.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-gate data-answer="fail" data-why="“Reasonable” has no observer and no measurement. Decide what reasonable means — a number of seconds, a percentile, a corpus — or you have an intention, not a criterion.">
+        <p class="lab-prompt">Search results return in a reasonable time for typical documents.</p>
+        <div class="choices">
+          <button class="kind" data-answer="pass">Could be failed</button>
+          <button class="kind" data-answer="fail">Cannot be failed as written</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+
+      <div class="lab-card" data-gate data-answer="pass" data-why="You can observe it: upload that file, watch for the message and the named limit. The number was decided rather than discovered, which is the point.">
+        <p class="lab-prompt">A PDF over 25 MB is rejected at upload with a message that states the size limit.</p>
+        <div class="choices">
+          <button class="kind" data-answer="pass">Could be failed</button>
+          <button class="kind" data-answer="fail">Cannot be failed as written</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+
+      <div class="lab-card" data-gate data-answer="fail" data-why="Nobody knows what counts as ambiguous, so no outcome can be checked. This is a question, not a criterion: answer it, or put it outside the slice.">
+        <p class="lab-prompt">The assistant admits uncertainty when the policy is ambiguous.</p>
+        <div class="choices">
+          <button class="kind" data-answer="pass">Could be failed</button>
+          <button class="kind" data-answer="fail">Cannot be failed as written</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+
+      <div class="lab-card" data-gate data-answer="fail" data-why="It describes construction, not observable behaviour — and it is satisfiable while the feature is broken. You could add the index and still answer every question wrongly.">
+        <p class="lab-prompt">The uploads table has an index on tenant_id and created_at.</p>
+        <div class="choices">
+          <button class="kind" data-answer="pass">Could be failed</button>
+          <button class="kind" data-answer="fail">Cannot be failed as written</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+
+      <div class="lab-card" data-gate data-answer="pass" data-why="Falsifiable, and pleasantly hostile: it names the review set, both allowed outcomes, and the thing that must never happen. This is how you state “accurate” without the word.">
+        <p class="lab-prompt">For each of the 12 questions in the review set, the answer quotes the uploaded policy or says “I don’t know”, and never states a fact absent from it.</p>
+        <div class="choices">
+          <button class="kind" data-answer="pass">Could be failed</button>
+          <button class="kind" data-answer="fail">Cannot be failed as written</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <p class="sidenote">The fourth one is worth a second look. Criteria that name construction are the ones an agent satisfies most eagerly, because they can be met without the feature working at all. Keep them out of acceptance criteria; they belong in a design note, if anywhere.</p>
+
+    <div class="win">
+      <h2>The win</h2>
+      <p>You can now put any criterion through one gate — <em>what would I observe if this were false?</em> — and act on the answer three ways: convert the adjective into a measurement, demote the unanswerable one to a question, or throw out the one that describes construction. That is the difference between reviewing work and having opinions about it.</p>
+      <p>Keep it next to the next ticket you write: <a href="../reference/acceptance-criteria.html">reference sheet</a> · <a href="../reference/glossary.html">glossary</a>.</p>
+    </div>
+
+    <h2>On your own code, tonight</h2>
+
+    <p>Open the last ticket you worked on, or the last thing you asked an agent to build. Run the gate over its criteria and count how many could have been failed. If the honest answer is none, that ticket was reviewed on vibes — and the fix takes about five minutes. Rewrite two of them, and notice which decisions you had to make in order to write a number down. Those decisions were always there; they were just being made later, by whoever implemented it.</p>
+
+    <h2>Primary source</h2>
+
+    <p>Read <a href="https://ptgmedia.pearsoncmg.com/images/0321419499/samplechapter/robertson_ch02.pdf">chapter 2 of <em>Mastering the Requirements Process</em></a> (the publisher’s free sample chapter), specifically “Writing the Requirements” and “The Quality Gateway.” It is the most rigorous treatment of this idea, from a tradition that predates agile and does not depend on any tooling. If you only have ten minutes, read Wynne’s <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">“Introducing Example Mapping”</a> instead — it is the practical conversation shape, and the rules/examples/questions split is the part you will use most often.</p>
+
+    <div class="teacher">
+      <h2>Ask me</h2>
+      <p>I am your teacher here — if anything is unclear, ask. Useful things to bring me: criteria from a real ticket you want put through the gate, a quality word you cannot figure out how to measure (“maintainable”, “secure” and “intuitive” are genuinely hard), or a case where you think a number would do more harm than good. That last one is a real argument, and worth having.</p>
+    </div>
+
+    <footer class="meta">
+      <p>Stage B of the <a href="../ROADMAP.md">roadmap</a>: specifying and reviewing. Next: bounding a problem before you write criteria at all, then what “safe to ship” means in review.</p>
+      <h3>Sources</h3>
+      <ul class="refs">
+        <li>Robertson, S. &amp; Robertson, J. <a href="https://ptgmedia.pearsoncmg.com/images/0321419499/samplechapter/robertson_ch02.pdf"><em>Mastering the Requirements Process</em>, ch. 2</a> — fit criteria, the Quality Gateway.</li>
+        <li>Robertson, S. (1999). <a href="https://doi.org/10.1109/dexa.1999.795193">“Reliable requirements through the quality gateway”</a> — “each requirement must have a testable fit criterion.”</li>
+        <li>Wynne, M. <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">“Introducing Example Mapping”</a> — rules, examples, questions.</li>
+        <li>Adzic, G. <a href="https://gojko.net/2014/05/05/focus-on-key-examples/">“Focus on key examples”</a> and <a href="https://gojko.net/2010/06/16/anatomy-of-a-good-acceptance-test/">“Anatomy of a good acceptance test”</a>.</li>
+        <li>Fowler, M. <a href="https://martinfowler.com/bliki/GivenWhenThen.html">“Given When Then”</a> — the structure to reach for once an example has a known outcome.</li>
+        <li>Wake, B. <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">“INVEST in Good Stories”</a> — <em>testable</em>, the criterion this lesson unpacks.</li>
+      </ul>
+    </footer>
+  </article>
+
+  <script src="../assets/gate.js"></script>
+</body>
+</html>

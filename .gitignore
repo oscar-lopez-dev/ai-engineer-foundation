@@ -1,0 +1,45 @@
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE & Editor
+.idea/
+.vscode/
+.cursor/
+*.swp
+*.swo
+
+# Environment & Secrets
+.env
+.env*.local
+
+# Node & Frontend
+node_modules/
+.next/
+out/
+dist/
+build/
+.npm
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# .NET / C#
+bin/
+obj/
+*.user
+*.userosscache
+*.suo
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+
+# Coverage & Tests
+coverage/
+.nyc_output/

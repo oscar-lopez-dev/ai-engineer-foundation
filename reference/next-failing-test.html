@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The next failing test — reference</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>The next failing test</h1>
+      <p class="lede">After one honest pass, write one new failing test of the tracer you already named. Existing tests stay green. The rest of the list stays a list.</p>
+    </header>
+
+    <h2>The loop (this lesson)</h2>
+    <ol>
+      <li>You already have <a href="one-failing-test.html">one failing test</a> that you made pass with <a href="only-enough-to-pass.html">only enough code</a>.</li>
+      <li>Look at the <a href="tracer-bullet.html">tracer</a> you named. Which observation still has no failing test?</li>
+      <li>Turn that one item into a runnable test at a public seam.</li>
+      <li>Watch it fail for a real reason. Tests you already had keep passing.</li>
+      <li>Write only enough product code to pass the new test. The rest of the list stays notes.</li>
+    </ol>
+    <p class="sidenote">Beck, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a>, step 5. Cleaning up the code after a pass is a later lesson. Picking the best order of tests, beyond “the next missing piece of the tracer,” is also later.</p>
+
+    <h2>Which next move</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Move</th>
+          <th>What it verifies</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Turn the leftover cases into tests</td>
+          <td>Imagined behaviour. The same bulk-suite mistake, one cycle later.</td>
+        </tr>
+        <tr>
+          <td>Build the rest of the feature</td>
+          <td>Code no new test asked for. The same extra-feature mistake, one cycle later.</td>
+        </tr>
+        <tr>
+          <td>One next failing test of the tracer</td>
+          <td>Observed behaviour. Earlier tests stay green. Distant cases stay on the list.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The next test looks like</h2>
+    <ul>
+      <li>Names a missing piece of the tracer you already wrote (for Handbook Ask, the page).</li>
+      <li>Calls a public seam. Does not rewrite the tests you already had.</li>
+      <li>Expected values are still literals you chose, not values pasted from a run.</li>
+      <li>Fails before the new product code exists. Earlier tests keep passing.</li>
+    </ul>
+    <pre>[Fact]
+public async Task Ask_page_shows_i_dont_know()
+{
+    var page = await client.GetAsync("/");
+    // submit the question on the page; read the result
+    Assert.Contains("I don't know", body);
+}</pre>
+
+    <h2>Done when</h2>
+    <ul>
+      <li>You can point at the new test and say how it failed, while earlier tests stayed green.</li>
+      <li>The next case was a missing piece of the named tracer, not a distant item from the list.</li>
+      <li>Other cases are still a list, not extra tests and not extra code.</li>
+      <li>An agent was told: one next failing test; existing tests stay green; do not implement the list.</li>
+    </ul>
+
+    <h2>Agent prompt shape</h2>
+    <pre>The first test is green. Do not edit it.
+
+Write ONE next failing test of this tracer:
+the missing piece is [page / auth / lookup].
+Show me the red output. Existing tests must stay green.
+Then write only enough code to pass it.
+Still on the list (not tests yet): [cases].</pre>
+
+    <h2>Related, later</h2>
+    <ul>
+      <li><strong>Refactor</strong> (Beck treats this as optional in Canon TDD; Fowler treats skipping it as a common failure; Pocock’s <code>/tdd</code> parks it in review). After you can cycle red → green → next test.</li>
+      <li><strong>Sequencing tests</strong>: which order of cases produces the best design. Beck: a skill that comes with experience. Later than the starter rule.</li>
+      <li><strong>Seams and mocks</strong>: test through the public interface; do not mock internal collaborators. Later.</li>
+      <li><strong>Spec templates</strong> (<code>/to-spec</code>): the written behaviour that the test list comes from. Later.</li>
+    </ul>
+
+    <footer class="meta">
+      From <a href="../lessons/0005-next-test-not-the-rest.html">Lesson 0005</a>.
+      Prior: <a href="only-enough-to-pass.html">only enough to pass</a> · <a href="one-failing-test.html">one failing test</a> · <a href="glossary.html">glossary</a>.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

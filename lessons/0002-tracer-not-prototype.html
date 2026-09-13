@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0002 — A tracer you keep, not a prototype you throw</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0002 · Engineering with coding agents</p>
+      <h1>A tracer you keep, not a prototype you throw</h1>
+      <p class="lede">Two kinds of small work look similar. A prototype answers a question and is thrown away. A tracer is a thin path through the real product. You keep the tracer and add to it later.</p>
+    </header>
+
+    <p>You can already tell a <a href="0001-vertical-slice-not-layer.html">layer from a slice</a>. The next distinction is between three things that all feel like “starting small”: a notebook experiment, an API with no user interface, and a first product ticket. Only the last of these is a path you will keep in the product.</p>
+
+    <div class="callout">
+      <strong>Correct this</strong>
+      Wrong: any small start is progress on the product.<br>
+      Right: a prototype answers a question and is then thrown away. A tracer is lean, complete, and stays in the product.
+    </div>
+
+    <p>This still serves Group 0 of your mission. You want to ship an AI-enabled product and direct agents so their output can be checked. An agent will often polish throwaway code until it looks finished, or build a whole feature at once. You have to say which kind of small work you want.</p>
+
+    <h2 id="two-kinds">Two kinds of small</h2>
+    <p>Hunt and Thomas split them cleanly. A prototype is for <em>your</em> learning — one aspect, often not even through your code:</p>
+    <blockquote>
+      Prototypes by their nature are not designed to be long lasting code. Prototypes are designed to be thrown away. They’re one-offs. … A prototype is like a town in a western movie. It’s all facade. There’s nothing behind it. You cannot move in and raise a family in one of those houses.
+      <cite><a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Andy Hunt &amp; Dave Thomas, interviewed by Bill Venners, 2003</a></cite>
+    </blockquote>
+    <p>A tracer is different. Hunt and Thomas describe it as a thin line of execution that you run under real conditions so you can see the result, then adjust. Their first tracer is a “Hello, world” that still goes from the user interface through logic to a database. You keep that line in the product and add to it. You do not replace it with a rewrite of throwaway prototype code.</p>
+    <p class="sidenote">The book line, when you have a copy: prototyping generates disposable code; tracer code is lean but complete and forms part of the skeleton of the final system. <em>The Pragmatic Programmer</em>, Hunt &amp; Thomas. Until then the interview is the free first-party source.</p>
+
+    <figure class="diagram" aria-label="Prototype facade versus a tracer you keep">
+      <svg viewBox="0 0 640 260" role="img">
+        <title>A throwaway facade next to a thin path through the real stack</title>
+        <text x="8" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Prototype (throw)</text>
+        <rect x="8" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="148" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">Looks like UI</text>
+        <rect x="28" y="92" width="240" height="88" fill="none" stroke="#1c1916" stroke-dasharray="6 5"/>
+        <text x="148" y="128" text-anchor="middle" font-size="13" font-family="Georgia, serif">nothing behind</text>
+        <text x="148" y="148" text-anchor="middle" font-size="13" font-family="Georgia, serif">the facade</text>
+        <text x="148" y="210" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">keep the verdict, delete the code</text>
+        <text x="148" y="248" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">throwaway (Hunt: a facade)</text>
+
+        <text x="340" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Tracer (keep)</text>
+        <rect x="340" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="480" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">UI</text>
+        <rect x="340" y="84" width="280" height="48" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="480" y="114" text-anchor="middle" font-size="14" font-family="Georgia, serif">API</text>
+        <rect x="340" y="132" width="280" height="48" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="480" y="162" text-anchor="middle" font-size="14" font-family="Georgia, serif">Logic</text>
+        <rect x="340" y="180" width="280" height="48" fill="#d4cbbd" stroke="#1c1916"/>
+        <text x="480" y="210" text-anchor="middle" font-size="14" font-family="Georgia, serif">Data</text>
+        <rect x="454" y="36" width="52" height="192" fill="#a63d2f" fill-opacity="0.28" stroke="#a63d2f" stroke-width="2"/>
+        <text x="480" y="248" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">the path stays in the product</text>
+      </svg>
+      <figcaption>The red band is the same as in lesson 0001. Here the question is whether that path is throwaway reconnaissance, or code that stays in the product.</figcaption>
+    </figure>
+
+    <h2>Handbook Ask, three first moves</h2>
+    <p>Same product: employees query uploaded policy PDFs. Next.js, ASP.NET Core, SQL, a model. Three “small starts” arrive:</p>
+    <ol>
+      <li>A Python notebook that sends one PDF page to the model and prints an answer.</li>
+      <li><code>POST /api/ask</code> that calls OpenAI. No page. “We’ll wire the UI later.”</li>
+      <li>An authenticated employee pastes a question about the one PDF already in SQL and sees a short answer, or “I don’t know,” on the real page.</li>
+    </ol>
+    <p>The notebook is a prototype. The unknown is “can the model ground in this PDF?” Hunt: you might not even go through your code. Capture the verdict (yes, no, only with the first three pages, hallucinates clause numbers). Delete or park the notebook off main. <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/prototype/SKILL.md">Pocock’s <code>/prototype</code></a> is this: throwaway from day one, no polish, the answer is what survives.</p>
+    <p>The endpoint with no page is a <a href="0001-vertical-slice-not-layer.html">layer</a>. It is not a prototype (you are not answering a design question) and not a tracer (nobody can walk the path). Leaving the user interface “until later” delays the integration the tracer was meant to check.</p>
+    <p>The third option is a tracer. It is valuable and testable, and you keep it: that page, API, and database row are the start of the product. The model call on that path may be a stub that always returns “I don’t know.” That is still a tracer, because you kept the path. Whether the model can ground in the PDF is a separate prototype question, answered outside the product.</p>
+    <p><a href="https://www.aihero.dev/tracer-bullets">Pocock’s article on tracer bullets for agents</a> applies the same split. Models tend to build more than you asked for. Ask for one end-to-end slice, get feedback, then the next slice — not several screens and a complete API at once.</p>
+    <p class="sidenote"><a href="../reference/tracer-bullet.html">Reference: tracer vs prototype</a> · <a href="../reference/vertical-slice.html">vertical slice</a> · <a href="../reference/glossary.html">glossary</a>.</p>
+
+    <h2>The fat “slice”</h2>
+    <p>After lesson 0001 you might write this and think you are done:</p>
+    <blockquote>
+      Employees can upload many PDFs, ask questions with citations, see chat history, and admins can manage the corpus.
+    </blockquote>
+    <p>That names people and outcomes. It is still not a tracer. An agent given that prompt will try to build a whole product that does not exist yet. Hunt and Thomas’s point is that when you are still learning the target, you run one thin path you can observe, not every feature at once. Bound it: one actor, one PDF, one question, one named failure, and an explicit out-of-scope list.</p>
+
+    <h2>Practice: classify</h2>
+    <p>For each first move, choose layer, prototype, or tracer. Feedback is immediate.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-classify data-kind="layer" data-why="A table existing is not a path and not a question. You already classified this in lesson 0001.">
+        <p class="lab-prompt">Create the HandbookDocuments table and EF Core DbContext.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Just one technical layer</button>
+          <button type="button" class="kind" data-kind="prototype">Throwaway you learn from</button>
+          <button type="button" class="kind" data-kind="tracer">A thin path you will keep</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="prototype" data-why="One question: can the model ground? The script is a facade. Keep the verdict, not the notebook.">
+        <p class="lab-prompt">A Python notebook that sends one PDF page to the model and prints an answer.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Just one technical layer</button>
+          <button type="button" class="kind" data-kind="prototype">Throwaway you learn from</button>
+          <button type="button" class="kind" data-kind="tracer">A thin path you will keep</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="layer" data-why="No page, no walkable path. ‘Wire later’ postpones the integration you needed the tracer for.">
+        <p class="lab-prompt">POST /api/ask that calls OpenAI. No UI. We’ll wire the page later.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Just one technical layer</button>
+          <button type="button" class="kind" data-kind="prototype">Throwaway you learn from</button>
+          <button type="button" class="kind" data-kind="tracer">A thin path you will keep</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="tracer" data-why="A person walks a real path. Stubbing the model is allowed: you are keeping the path, not pretending the notebook is the product.">
+        <p class="lab-prompt">Employee pastes a question about the one PDF in SQL and sees “I don’t know” on the real page. The API still looks the document up; the model is a stub.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Just one technical layer</button>
+          <button type="button" class="kind" data-kind="prototype">Throwaway you learn from</button>
+          <button type="button" class="kind" data-kind="tracer">A thin path you will keep</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <h2>Practice: thin it</h2>
+    <p>This is what you might still type at an agent after lesson 0001:</p>
+    <p><em>Build Handbook Ask: employees upload many PDFs, ask questions with citations and chat history, and admins manage the corpus. Wire OpenAI.</em></p>
+    <p>Rewrite it as one tracer you would keep. Name who acts, what they see, one bound, and what is out of scope. Do not write a notebook.</p>
+
+    <div class="lab-rewrite" data-score-rewrite>
+      <textarea class="rewrite" placeholder="An authenticated employee can… Out of scope: …"></textarea>
+      <button type="button" class="primary">Check the tracer</button>
+      <ul class="checks"></ul>
+      <script type="application/json" data-rewrite-checks>
+        [
+          {
+            "minLength": 40,
+            "pass": "You wrote a real slice, not a slogan.",
+            "fail": "Say the whole path in a sentence or two (who does what, what they see)."
+          },
+          {
+            "must": "\\b(employee|user|reader|person|someone|staff|manager)s?\\b",
+            "pass": "A person is in the picture.",
+            "fail": "Name who can walk this path (employee, user, reader…)."
+          },
+          {
+            "must": "\\b(see|sees|shown|shows|get|gets|read|reads|displayed|display)\\b",
+            "pass": "The result is observable.",
+            "fail": "Say what they can see or get — that is what you will test."
+          },
+          {
+            "must": "\\b(one|single)\\b|don't know|do not know|i don't know|this pdf|one pdf|one document",
+            "pass": "The tracer is bounded (one thing, or a named failure).",
+            "fail": "Bound it: one document, one question, or a named failure such as “I don’t know.”"
+          },
+          {
+            "must": "out of scope|not include|without |excluding|not history|no history|not upload|not admin|not citation|citations later",
+            "pass": "You named what this tracer will not do.",
+            "fail": "Say what is out of scope (uploads, history, citations, admin, many PDFs)."
+          },
+          {
+            "mustNot": "notebook|colab|scratch script|console app",
+            "pass": "This is product code you would keep, not a notebook.",
+            "fail": "A notebook or scratch script is a prototype. Write the path in the product."
+          },
+          {
+            "layerLead": {
+              "starts": "^(add|create|build|implement|wire|set up)\\b",
+              "has": "\\b(table|endpoint|api|component|form|dbcontext|schema|openai|client)\\b",
+              "unless": "\\b(see|sees|shown|get|gets)\\b"
+            },
+            "pass": "The lead sentence is behaviour, not a layer.",
+            "fail": "You still started from a layer (table, endpoint, component). Start from the user path."
+          }
+        ]
+      </script>
+    </div>
+
+    <h2>Retrieve</h2>
+    <p>Answer from memory. Do not look back at the explanations above. The two choices in each question are the same length on purpose, so length is not a hint.</p>
+
+    <div class="quiz">
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="A table existing is not a path anyone can walk. You classified this in lesson 0001 — retrieve it, don’t re-read it.">
+        <p class="quiz-stem">“Create the HandbookDocuments table” is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">A layer nobody can use</button>
+          <button type="button" class="choice" data-choice="1">A path somebody can use</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="The notebook answers a question. Hunt: throw the facade. Keep the verdict.">
+        <p class="quiz-stem">A Python script that prints one model answer is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Learn then delete the code</button>
+          <button type="button" class="choice" data-choice="1">Keep then grow the product</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="The unknown is the model, not whether the stack hangs together. Prototype first; then put a tracer through the product.">
+        <p class="quiz-stem">You don’t know if the model can ground in a PDF. First you want:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Throwaway code for learning</button>
+          <button type="button" class="choice" data-choice="1">Production path for keeping</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+    <p class="sidenote">If you missed one, that is expected. Retrieval is how the idea sticks. Re-read <a href="#two-kinds">two kinds of small</a>, then try the questions again tomorrow rather than immediately.</p>
+
+    <h2>Read this</h2>
+    <p>Primary source: <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Hunt &amp; Thomas, “Tracer Bullets and Prototypes”</a> (the Artima interview). Read the tracer-bullet section and the prototyping section. Their western-movie-town image is a description of a prototype: it looks finished from the front, but there is nothing behind it to keep.</p>
+    <p>Then, because you will use coding agents: <a href="https://www.aihero.dev/tracer-bullets">Matt Pocock, “Tracer Bullets: Keeping AI Slop Under Control.”</a> Same keep-and-extend idea, applied to models that tend to build too much at once. When the unknown is a design question rather than a product path, use his <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/prototype/SKILL.md"><code>/prototype</code></a> skill instead, and tell the agent the code is throwaway.</p>
+
+    <div class="win">
+      <h2>You should now be able to</h2>
+      <p>Look at a proposed first move and say: layer (wrong unit), prototype (learn then throw), or tracer (thin path you keep). When you prompt an agent, say which of those you want. Keep the <a href="../reference/tracer-bullet.html">reference sheet</a> next to the next ticket you write.</p>
+    </div>
+
+    <div class="teacher">
+      <h2>Ask your teacher</h2>
+      <p>This agent is the teacher. If any part of this lesson is unclear, ask. You can paste your thinned tracer, or a spike from work you want classified.</p>
+    </div>
+
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Hunt, A. &amp; Thomas, D. Interviewed by Venners, B. (2003). <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Tracer Bullets and Prototypes</a>.</li>
+      <li>Hunt, A. &amp; Thomas, D. <em>The Pragmatic Programmer</em>. Tracer code vs prototyping — cite the book when you have a copy; the interview is the free stand-in.</li>
+      <li>Pocock, M. <a href="https://www.aihero.dev/tracer-bullets">Tracer Bullets: Keeping AI Slop Under Control</a>. Also <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/prototype/SKILL.md"><code>/prototype</code></a> and <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/to-tickets/SKILL.md"><code>/to-tickets</code></a>.</li>
+      <li>Wake, W. (2003). <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">INVEST in Good Stories, and SMART Tasks</a> — the cake from <a href="0001-vertical-slice-not-layer.html">lesson 0001</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      Tied to <a href="../MISSION.md">the mission</a>: a first move you can keep, review, and hand to an agent.
+      Prior: <a href="0001-vertical-slice-not-layer.html">0001 — a vertical slice, not a layer</a>.
+      Next: <a href="0003-one-failing-test.html">0003 — one failing test, not a suite</a>.
+      Catalogue: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/slice-lab.js"></script>
+  <script src="../assets/score-rewrite.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0001 — A vertical slice, not a layer</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0001 · Engineering with coding agents</p>
+      <h1>A vertical slice, not a layer</h1>
+      <p class="lede">The unit of work is a thin path a user can walk. It is not a table, an endpoint, or a component on its own.</p>
+    </header>
+
+    <p>In ticket-guided work, progress is often counted as finishing a technical piece: “add the documents table,” “add <code>POST /api/ask</code>,” “build the form.” Each of those tickets can be merged. None of them, by itself, is a result a user can see. That is the idea this lesson replaces.</p>
+
+    <div class="callout">
+      <strong>Correct this</strong>
+      Wrong: a ticket describes a layer of work; done means that layer exists.<br>
+      Right: a ticket describes a thin path a person can walk; done means that path is observable.
+    </div>
+
+    <p>This is the first skill in Group 0 of your mission. You want to design and ship AI-enabled products, and to direct coding agents so their output can be checked. Agents fail in the same way ticket-guided teams fail: they finish one technical layer at a time, then find that the layers do not connect into a path a user can walk. <a href="https://www.aihero.dev/tracer-bullets">Pocock</a> uses the word <em>slop</em> for that kind of output — generated work that looks complete but is not verifiable.</p>
+
+    <h2 id="the-cake">The cake</h2>
+    <p>Bill Wake, writing the original INVEST criteria for stories, used a cake:</p>
+    <blockquote>
+      Think of a whole story as a multi-layer cake, e.g., a network layer, a persistence layer, a logic layer, and a presentation layer. When we split a story, we’re serving up only part of that cake. We want to give the customer the essence of the whole cake, and the best way is to slice vertically through the layers. Developers often have an inclination to work on only one layer at a time (and get it “right”); but a full database layer (for example) has little value to the customer if there’s no presentation layer.
+      <cite><a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">Bill Wake, “INVEST in Good Stories, and SMART Tasks,” 2003</a></cite>
+    </blockquote>
+    <p class="sidenote">Wake’s other letters matter later. For this lesson, keep two: <em>valuable</em> (someone can use this path) and <em>testable</em> (you could write a check for it).</p>
+
+    <figure class="diagram" aria-label="Horizontal layers versus a vertical slice">
+      <svg viewBox="0 0 640 280" role="img">
+        <title>Four cake layers, then the same cake with one thin vertical cut</title>
+        <text x="8" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Horizontal (layers)</text>
+        <rect x="8" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="148" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">UI</text>
+        <rect x="8" y="84" width="280" height="48" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="148" y="114" text-anchor="middle" font-size="14" font-family="Georgia, serif">API</text>
+        <rect x="8" y="132" width="280" height="48" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="148" y="162" text-anchor="middle" font-size="14" font-family="Georgia, serif">Logic</text>
+        <rect x="8" y="180" width="280" height="48" fill="#d4cbbd" stroke="#1c1916"/>
+        <text x="148" y="210" text-anchor="middle" font-size="14" font-family="Georgia, serif">Data</text>
+        <text x="148" y="250" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">nothing a user can walk</text>
+
+        <text x="340" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Vertical (slice)</text>
+        <rect x="340" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="480" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">UI</text>
+        <rect x="340" y="84" width="280" height="48" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="480" y="114" text-anchor="middle" font-size="14" font-family="Georgia, serif">API</text>
+        <rect x="340" y="132" width="280" height="48" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="480" y="162" text-anchor="middle" font-size="14" font-family="Georgia, serif">Logic</text>
+        <rect x="340" y="180" width="280" height="48" fill="#d4cbbd" stroke="#1c1916"/>
+        <text x="480" y="210" text-anchor="middle" font-size="14" font-family="Georgia, serif">Data</text>
+        <rect x="454" y="36" width="52" height="192" fill="#a63d2f" fill-opacity="0.28" stroke="#a63d2f" stroke-width="2"/>
+        <text x="480" y="250" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">a path someone can walk</text>
+      </svg>
+      <figcaption>The red band is the slice. It is thin. It is complete. The rest of each layer waits.</figcaption>
+    </figure>
+
+    <h2>A path through your stack</h2>
+    <p>Imagine <strong>Handbook Ask</strong>: employees query uploaded policy PDFs. Next.js in the browser, ASP.NET Core behind it, SQL for documents, a model call for the answer. Four tickets arrive:</p>
+    <ol>
+      <li>Create <code>HandbookDocuments</code> and the EF Core context.</li>
+      <li>Add <code>POST /api/ask</code> with validation.</li>
+      <li>Build <code>AskForm.tsx</code> with a spinner.</li>
+      <li>Wire the OpenAI client.</li>
+    </ol>
+    <p>Those are four layers. After all four are merged, you still do not know whether an employee can ask a question and see an answer. The risk that the pieces will not connect was left until the end. <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Hunt and Thomas</a> designed tracer bullets to avoid that: a thin line of execution from the user interface through logic to the database. The code is production quality, but it only covers that one path.</p>
+    <p>One slice instead:</p>
+    <blockquote>
+      An authenticated employee can paste a question about one uploaded PDF and see either a short answer grounded in that PDF, or the explicit sentence “I don’t know.”
+    </blockquote>
+    <p>That slice still touches SQL, the API, the page, and the model. It does not finish any of those layers. It is valuable (someone can use it) and testable (you can watch it happen). <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/to-tickets/SKILL.md">Pocock’s <code>/to-tickets</code></a> insists on the same shape for agent work: a narrow complete path through schema, API, UI, and tests; demoable alone; sized to one context window.</p>
+    <p class="sidenote"><a href="../reference/vertical-slice.html">Reference: vertical slice</a> — keep this beside you when you write tickets or prompts.</p>
+
+    <h2>A name collision (for later)</h2>
+    <p><a href="https://www.jimmybogard.com/vertical-slice-architecture/">Jimmy Bogard’s “Vertical Slice Architecture”</a> is about how code is organised in folders (by feature, not by technical layer). That is useful later. It is not the skill in this lesson. Here, “slice” means the <em>unit of delivery</em>: a path a person can walk.</p>
+
+    <h2>Practice: classify</h2>
+    <p>For each item, choose layer or slice. Feedback is immediate.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-classify data-kind="layer" data-why="A table existing is not a path anyone can walk.">
+        <p class="lab-prompt">Create the HandbookDocuments table and EF Core DbContext.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Work on a single layer</button>
+          <button type="button" class="kind" data-kind="slice">Work on a complete path</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="slice" data-why="An employee can do something and see a result. Thin, complete, observable.">
+        <p class="lab-prompt">Employee uploads one PDF and sees its title in the list.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Work on a single layer</button>
+          <button type="button" class="kind" data-kind="slice">Work on a complete path</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="layer" data-why="A component is a layer of UI. No API, no data, no outcome.">
+        <p class="lab-prompt">Build AskForm.tsx with a loading spinner and empty state.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Work on a single layer</button>
+          <button type="button" class="kind" data-kind="slice">Work on a complete path</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="slice" data-why="A named failure is still a walkable path. That is how you bound the slice.">
+        <p class="lab-prompt">Employee asks a question and sees “I don’t know” when the PDF has no matching passage.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="layer">Work on a single layer</button>
+          <button type="button" class="kind" data-kind="slice">Work on a complete path</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <h2>Practice: rewrite</h2>
+    <p>This is the ticket you would once have received — and the prompt you might still give an agent:</p>
+    <p><em>Add POST /api/ask that accepts {question} and calls OpenAI.</em></p>
+    <p>Rewrite it as one vertical slice for Handbook Ask. Name who acts, what they see, and one bound (one document, one failure, or an explicit out-of-scope).</p>
+
+    <div class="lab-rewrite" data-rewrite>
+      <textarea class="rewrite" placeholder="An authenticated employee can…"></textarea>
+      <button type="button" class="primary">Check the slice</button>
+      <ul class="checks"></ul>
+    </div>
+
+    <h2>Retrieve</h2>
+    <p>Answer from memory. Do not look back at the explanations above. The two choices in each question are the same length on purpose, so length is not a hint.</p>
+
+    <div class="quiz">
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="A table existing is not a path anyone can walk. Layers can merge with nothing demoable.">
+        <p class="quiz-stem">“Create the HandbookDocuments table” is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">A layer nobody can use</button>
+          <button type="button" class="choice" data-choice="1">A path somebody can use</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="1" data-why="Wake: serve a slice through the cake, not a whole layer of sponge.">
+        <p class="quiz-stem">The better first unit of work is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Tables then endpoints then screens</button>
+          <button type="button" class="choice" data-choice="1">Question in, one grounded answer</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="1" data-why="Agents often finish one technical layer at a time. A slice names a path they can complete and you can check.">
+        <p class="quiz-stem">The prompt that bounds an agent is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Add the Ask API endpoint</button>
+          <button type="button" class="choice" data-choice="1">See one answer on screen</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+    <p class="sidenote">If you missed one, that is expected. Retrieval is how the idea sticks. Re-read <a href="#the-cake">the cake</a>, then try the questions again tomorrow rather than immediately.</p>
+
+    <h2>Read this</h2>
+    <p>Primary source: <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">Bill Wake, “INVEST in Good Stories, and SMART Tasks” (2003)</a>. It is short. Read the <em>Valuable</em> and <em>Testable</em> sections, which explain the cake example.</p>
+    <p>Then, because you will use coding agents: <a href="https://www.aihero.dev/tracer-bullets">Matt Pocock, “Tracer Bullets: Keeping AI Slop Under Control.”</a> Same idea, applied to models that tend to build more than one path at a time.</p>
+
+    <div class="win">
+      <h2>You should now be able to</h2>
+      <p>Take a layer-ticket (or an agent prompt that names a table, endpoint, or component) and rewrite it as a bounded path a person can walk, with an observation that would count as done. Keep the <a href="../reference/vertical-slice.html">reference sheet</a> next to the next ticket you write.</p>
+    </div>
+
+    <div class="teacher">
+      <h2>Ask your teacher</h2>
+      <p>This agent is the teacher. If any part of this lesson is unclear, ask. You can paste your rewritten slice, or a ticket from work you want checked.</p>
+    </div>
+
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Wake, W. (2003). <a href="https://xp123.com/invest-in-good-stories-and-smart-tasks/">INVEST in Good Stories, and SMART Tasks</a>.</li>
+      <li>Hunt, A. &amp; Thomas, D. Interviewed by Venners, B. <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Tracer Bullets and Prototypes</a>.</li>
+      <li>Pocock, M. <a href="https://www.aihero.dev/tracer-bullets">Tracer Bullets: Keeping AI Slop Under Control</a>. Also <a href="https://github.com/mattpocock/skills">mattpocock/skills</a>, especially <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/to-tickets/SKILL.md"><code>/to-tickets</code></a>.</li>
+      <li>Adzic, G. (2014). <a href="https://gojko.net/2014/06/09/forget-the-walking-skeleton-put-it-on-crutches/">Forget the walking skeleton — put it on crutches</a> (quotes Cockburn’s Crystal Clear definition).</li>
+      <li>Bogard, J. <a href="https://www.jimmybogard.com/vertical-slice-architecture/">Vertical Slice Architecture</a> — parked; folder layout, not delivery.</li>
+    </ol>
+
+    <footer class="meta">
+      Tied to <a href="../MISSION.md">the mission</a>: own the unit of work so agent-delivered software is verifiable.
+      Next: <a href="0002-tracer-not-prototype.html">0002 — a tracer you keep, not a prototype you throw</a>.
+      Catalogue: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/slice-lab.js"></script>
+</body>
+</html>

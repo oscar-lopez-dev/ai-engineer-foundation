@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Only enough to pass — reference</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>Only enough to pass</h1>
+      <p class="lede">The product change after one test is red. The test file does not change. Cases still on the list are not implemented yet.</p>
+    </header>
+
+    <h2>The loop (this lesson)</h2>
+    <ol>
+      <li>You already have <a href="one-failing-test.html">one failing test</a> of a <a href="tracer-bullet.html">tracer</a>.</li>
+      <li>Change the product so that this test passes, along with any tests you already had.</li>
+      <li>Write only the code this test requires. Nothing from the rest of the list.</li>
+      <li>Do not edit the test to make it pass.</li>
+      <li>If you discover a new case, add it to the test list. Do not implement it yet.</li>
+    </ol>
+    <p class="sidenote">Beck, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a>, “Make it Pass.” Cleaning up the code after the test passes is a later lesson.</p>
+
+    <h2>Which green move</h2>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th>Move</th>
+          <th>What it verifies</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Implement the rest of the feature</td>
+          <td>Code the test did not ask for. Those parts were never forced by a failure.</td>
+        </tr>
+        <tr>
+          <td>Edit the test until it is green</td>
+          <td>A pretend pass. Deleted assertions, or expected values pasted from a run, no longer catch a mistake.</td>
+        </tr>
+        <tr>
+          <td>Only the code this test needs</td>
+          <td>Observed behaviour. The test is unchanged. The next case stays on the list.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>The pass looks like</h2>
+    <ul>
+      <li>The same test file, with the same assertions you chose.</li>
+      <li>The smallest product change that makes those assertions true (for Handbook Ask, a stub that returns “I don’t know”).</li>
+      <li>No upload, real model, citations, or extra routes unless this test fails without them.</li>
+      <li>The tracer is still the destination. This green is not the whole tracer.</li>
+    </ul>
+    <pre>app.MapPost("/api/ask", (AskRequest req) =&gt;
+    Results.Ok(new { answer = "I don't know" }));</pre>
+
+    <h2>Done when</h2>
+    <ul>
+      <li>You can point at the same test and say it failed, then passed, without the file being edited.</li>
+      <li>The product change is only what that test required.</li>
+      <li>Other cases are still a list, not extra code and not extra tests.</li>
+      <li>An agent was told: only enough product code; do not edit the test; do not implement the list.</li>
+    </ul>
+
+    <h2>Agent prompt shape</h2>
+    <pre>The test is red. Do not edit it.
+
+Write only enough product code to make THIS test pass.
+Do not implement items still on the list: [cases].
+Show me the passing run of the same test.</pre>
+
+    <h2>Related, later</h2>
+    <ul>
+      <li><strong>The next failing test</strong>: after this pass, one new failing check of the tracer you named. See <a href="next-failing-test.html">the next failing test</a> and <a href="../lessons/0005-next-test-not-the-rest.html">lesson 0005</a>.</li>
+      <li><strong>Refactor</strong> (Beck treats this as optional in Canon TDD; Fowler treats skipping it as a common failure; Pocock’s <code>/tdd</code> parks it in review). After you can cycle red → green → next test.</li>
+      <li><strong>Seams and mocks</strong>: test through the public interface; do not mock internal collaborators. Later.</li>
+      <li><strong>Spec templates</strong> (<code>/to-spec</code>): the written behaviour that the test list comes from. Later.</li>
+    </ul>
+
+    <footer class="meta">
+      From <a href="../lessons/0004-only-enough-to-pass.html">Lesson 0004</a>.
+      Next: <a href="next-failing-test.html">the next failing test</a>.
+      Prior: <a href="one-failing-test.html">one failing test</a> · <a href="tracer-bullet.html">tracer vs prototype</a> · <a href="glossary.html">glossary</a>.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

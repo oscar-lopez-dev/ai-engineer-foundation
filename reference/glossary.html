@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Glossary — Full-stack AI Engineer</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Reference</p>
+      <h1>Glossary</h1>
+      <p class="lede">The words this course uses on purpose. Prefer these in tickets, prompts, and reviews.</p>
+    </header>
+
+    <h2>Delivery</h2>
+
+    <p><strong>Horizontal layer.</strong>
+    A unit of work named after a technical seam — a table, an endpoint, a component, a client. Done means that seam exists. Nobody can walk it yet.</p>
+    <p class="sidenote">_Avoid_: task, ticket (when used as if those were the unit of progress).</p>
+
+    <p><strong>Vertical slice.</strong>
+    A narrow, complete path from a person’s intent to an observable result. It touches every technical layer that path needs, and only as much of each layer as the path needs.</p>
+    <p class="sidenote">_Avoid_: feature (too fat), story (too vague unless it names the path). See <a href="vertical-slice.html">vertical slice</a>.</p>
+
+    <p><strong>Prototype.</strong>
+    Throwaway code that answers one question. You keep the verdict. You do not keep the code on main.</p>
+    <p class="sidenote">_Avoid_: spike (when used as if it were the first product ticket). See <a href="tracer-bullet.html">tracer vs prototype</a>.</p>
+
+    <p><strong>Tracer.</strong>
+    A lean, complete path through the real product. You keep it and thicken it. Feedback comes from firing under real conditions.</p>
+    <p class="sidenote">_Avoid_: walking skeleton (related, later). See <a href="tracer-bullet.html">tracer vs prototype</a>.</p>
+
+    <h2>Verification</h2>
+
+    <p><strong>Test list.</strong>
+    Scratch notes of the cases you expect to cover. Analysis, not test code.</p>
+    <p class="sidenote">_Avoid_: suite (when the cases are still notes). See <a href="one-failing-test.html">one failing test</a>.</p>
+
+    <p><strong>One failing test.</strong>
+    The first automated check of a tracer, written so it fails before any product code exists.</p>
+    <p class="sidenote">_Avoid_: red (until the colour is defined in the lesson). See <a href="one-failing-test.html">one failing test</a>.</p>
+
+    <p><strong>Only enough to pass.</strong>
+    The product change after one test is red. The test file does not change. Cases still on the list are not implemented yet.</p>
+    <p class="sidenote">_Avoid_: make it pass (when that means editing the test or building the rest of the list). See <a href="only-enough-to-pass.html">only enough to pass</a>.</p>
+
+    <h2>Specifying</h2>
+
+    <p><strong>Fit criterion.</strong>
+    The measurement attached to a requirement that makes it testable: what you would observe if it were false. Robertson &amp; Robertson’s term.</p>
+    <p class="sidenote">_Avoid_: acceptance criteria (when they are adjectives with no measurement). See <a href="acceptance-criteria.html">criteria that can fail</a>.</p>
+
+    <p><strong>Question.</strong>
+    A case where nobody present knows the right outcome. Not a weak criterion — a different thing, and never delegated as if it were one.</p>
+    <p class="sidenote">_Avoid_: edge case, TBD (both hide the fact that a decision is missing). See <a href="acceptance-criteria.html">criteria that can fail</a>.</p>
+
+    <p><strong>Key example.</strong>
+    A small, boundary-chosen case that carries information a human can criticise. Chosen instead of exhaustive variations.</p>
+    <p class="sidenote">_Avoid_: test case (when the point is shared understanding, not coverage). See <a href="acceptance-criteria.html">criteria that can fail</a>.</p>
+
+    <footer class="meta">
+      Terms enter here after they have been practised, not when first named.
+      Sources: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+</body>
+</html>

@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0003 — One failing test, not a suite</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0003 · Engineering with coding agents</p>
+      <h1>One failing test, not a suite</h1>
+      <p class="lede">Once you have a tracer you will keep, the first coding step is one automated test of that path. Write the test so that it fails. Then write only the product code needed to make it pass. Do not implement first and add tests later. Do not write a full suite of tests before any code exists.</p>
+    </header>
+
+    <p>You already know a <a href="0001-vertical-slice-not-layer.html">layer from a slice</a>, and a <a href="0002-tracer-not-prototype.html">prototype you throw away from a tracer you keep</a>. The next skill is how to verify the tracer.</p>
+    <p>Two common habits get in the way. In ticket-guided work, people often write the code first and add tests afterwards. Coding agents often do the same, or they write many tests up front and then implement until those tests pass. In both cases the tests describe behaviour that was guessed, not behaviour that was observed.</p>
+
+    <div class="callout">
+      <strong>Correct this</strong>
+      Wrong: implement the tracer, then add tests — or write every test, then implement.<br>
+      Right: write one test that fails, then only enough product code to make that test pass.
+    </div>
+
+    <p>This still serves your mission. You need to review your own work and an agent’s work against tests you can trust. If the tests are written after the code, they tend to repeat whatever the code already does. If many tests are written before any code exists, they describe a design that has not been tried yet. Either way, an agent can change a test to match poor code and still report that everything passed. A single test that you watched fail, then pass, is harder to fake.</p>
+
+    <h2 id="one-test">One test, then code</h2>
+    <p>Kent Beck describes test-driven development as a short loop. First you write a <em>test list</em>: a scratch list of cases you expect to cover. That list is notes, not test code. Next you turn exactly one item on the list into a real, automated test. Then you change the system so that this test passes, along with any tests you already had.</p>
+    <blockquote>
+      Mistake: convert all the items on the Test List into concrete tests, then make them pass one at a time. What happens when making the first test pass causes you to reconsider a decision that affects all those speculative tests? Rework.
+      <cite><a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD,” 2023</a></cite>
+    </blockquote>
+    <p>So: the list is planning. The first real test is how a caller will observe the path (for Handbook Ask, usually an HTTP request). You write product code only after that test fails. Martin Fowler makes the same point: writing the test first forces you to think about how the code will be used, not how it will be built.</p>
+    <p class="sidenote">In Beck’s book the colours are a shorthand: <em>red</em> means the test fails; <em>green</em> means it passes; then you may tidy the code. That last step is for a later lesson. Until you have the book, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a> is the free first-party source. <em>Test-Driven Development: By Example</em>, Beck.</p>
+
+    <figure class="diagram" aria-label="A bulk suite versus one failing test of the path">
+      <svg viewBox="0 0 640 250" role="img">
+        <title>Many tests written before any code, beside one failing test of the real path</title>
+        <text x="8" y="22" fill="#5c564c" font-size="13" font-family="system-ui">Many tests first</text>
+        <rect x="8" y="36" width="280" height="36" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="148" y="59" text-anchor="middle" font-size="13" font-family="Georgia, serif">upload · citations · history</text>
+        <rect x="8" y="76" width="280" height="36" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="148" y="99" text-anchor="middle" font-size="13" font-family="Georgia, serif">auth · empty · OpenAI errors</text>
+        <rect x="8" y="116" width="280" height="36" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="148" y="139" text-anchor="middle" font-size="13" font-family="Georgia, serif">admin · corpus · chat</text>
+        <rect x="8" y="156" width="280" height="36" fill="#d4cbbd" stroke="#1c1916"/>
+        <text x="148" y="179" text-anchor="middle" font-size="13" font-family="Georgia, serif">then implement the product</text>
+        <text x="148" y="220" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">tests of behaviour not yet built</text>
+
+        <text x="340" y="22" fill="#5c564c" font-size="13" font-family="system-ui">One test first</text>
+        <rect x="340" y="36" width="280" height="48" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="480" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">UI</text>
+        <rect x="340" y="84" width="280" height="48" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="480" y="114" text-anchor="middle" font-size="14" font-family="Georgia, serif">API</text>
+        <rect x="340" y="132" width="280" height="48" fill="#ddd4c6" stroke="#1c1916"/>
+        <text x="480" y="162" text-anchor="middle" font-size="14" font-family="Georgia, serif">Data</text>
+        <rect x="454" y="36" width="52" height="144" fill="#a63d2f" fill-opacity="0.28" stroke="#a63d2f" stroke-width="2"/>
+        <text x="480" y="210" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">one failing test of this path</text>
+        <text x="480" y="232" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">then only the code that makes it pass</text>
+      </svg>
+      <figcaption>The red band is the tracer from the earlier lessons. The first thing you write is an automated test of that path. It should fail because the path is not there yet.</figcaption>
+    </figure>
+
+    <h2>Handbook Ask, three first coding moves</h2>
+    <p>Use the same <a href="0002-tracer-not-prototype.html">tracer</a> as before: an authenticated employee pastes a question about the one PDF already in SQL and sees “I don’t know” on the real page. The model may be a stub. Compare three ways to start coding:</p>
+    <ol>
+      <li>Implement the page, the API, and the stub. Then write tests that match the responses.</li>
+      <li>Write tests for upload, citations, history, auth, empty input, and OpenAI errors. Then implement until they all pass.</li>
+      <li>Write one xUnit test: <code>POST /api/ask</code> with a question about the seeded PDF returns HTTP 200 and a body containing “I don’t know.” Run it and confirm it fails. Then write only enough ASP.NET code to make that test pass.</li>
+    </ol>
+    <p>Option 1 writes tests after the code. Those tests will describe whatever was already built, including mistakes. You never confirmed that the test can fail. An agent that wrote the code first can make any assertion pass.</p>
+    <p>Option 2 is the mistake Beck names, and what <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">Pocock calls horizontal slicing</a>: many tests written at once check imagined behaviour. The extra cases (upload, citations, history) are still only a list. If you turn them all into tests before any path exists, you lock in a design you have not tried. When an agent is short of context, it may change a test instead of fixing the path, and still report a pass.</p>
+    <p>Option 3 is the loop for this lesson. The test states the tracer in a form the test runner can fail. If the route does not exist, you should get a failure such as HTTP 404. That is a real failure. After you add a stub that returns “I don’t know,” the same test should pass. Upload, citations, and the real model stay on the test list. They are not tests yet.</p>
+    <pre>[Fact]
+public async Task Ask_seeded_pdf_says_i_dont_know()
+{
+    var res = await client.PostAsJsonAsync(
+        "/api/ask", new { question = "What is the leave policy?" });
+    var body = await res.Content.ReadAsStringAsync();
+    Assert.Equal(HttpStatusCode.OK, res.StatusCode);
+    Assert.Contains("I don't know", body);
+}</pre>
+    <p>This test uses a public boundary: the HTTP API. It does not call a private method, and it does not mock an internal client. The expected values are ones you chose — the string “I don’t know”, and status 200 — not values copied from a passing run. Beck warns against pasting actual output into the expected values, because then the test can no longer catch a mistake.</p>
+    <p class="sidenote"><a href="../reference/one-failing-test.html">Reference: one failing test</a> · <a href="../reference/tracer-bullet.html">tracer vs prototype</a> · <a href="../reference/glossary.html">glossary</a>.</p>
+
+    <h2>Practice: classify</h2>
+    <p>For each first coding move, choose whether it is many tests first, code first, or one failing test then code. You will get feedback immediately.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-classify data-kind="after" data-why="The tests are written after the code, so they will describe whatever already exists. You never confirmed that the test can fail.">
+        <p class="lab-prompt">Implement POST /api/ask with the stub, then write tests that match the responses.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="bulk">A batch of tests, then code</button>
+          <button type="button" class="kind" data-kind="after">The code, then a batch of tests</button>
+          <button type="button" class="kind" data-kind="one">One failing test, then the code</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="bulk" data-why="Beck: do not turn the whole list into tests at once. Pocock: a batch of tests checks imagined behaviour. The extra cases should stay on the list.">
+        <p class="lab-prompt">Write tests for upload, citations, history, auth, empty input, and OpenAI errors. Then implement until they pass.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="bulk">A batch of tests, then code</button>
+          <button type="button" class="kind" data-kind="after">The code, then a batch of tests</button>
+          <button type="button" class="kind" data-kind="one">One failing test, then the code</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="one" data-why="This is one automated test of the tracer. It should fail (no route, or no matching body). Then write only enough code to make it pass.">
+        <p class="lab-prompt">One test: asking about the seeded PDF returns “I don’t know.” Confirm it fails. Then write only enough code to make it pass.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="bulk">A batch of tests, then code</button>
+          <button type="button" class="kind" data-kind="after">The code, then a batch of tests</button>
+          <button type="button" class="kind" data-kind="one">One failing test, then the code</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="one" data-why="A scratch list of cases is not a test suite. Beck’s first step is the list. His second step is exactly one real test. The other cases wait.">
+        <p class="lab-prompt">Scratch list: I don’t know, unauthenticated, empty question. Turn only the first into a failing test, then make it pass.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="bulk">A batch of tests, then code</button>
+          <button type="button" class="kind" data-kind="after">The code, then a batch of tests</button>
+          <button type="button" class="kind" data-kind="one">One failing test, then the code</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <h2>Practice: write the first test</h2>
+    <p>Here is a prompt you might still give an agent after lesson 0002:</p>
+    <p><em>Build the tracer: employee sees “I don’t know.” Write a full test suite and the implementation.</em></p>
+    <p>Rewrite it so the agent is asked for the <em>first failing test only</em>. Name where you observe the result (the page or the API), what that result is, and that the test must fail before any product code is written. Say which cases stay on the list and are not tests yet.</p>
+
+    <div class="lab-rewrite" data-score-rewrite>
+      <textarea class="rewrite" placeholder="One failing test: POST /api/ask … returns … Do not implement yet. Still on the list: …"></textarea>
+      <button type="button" class="primary">Check the first test</button>
+      <ul class="checks"></ul>
+      <script type="application/json" data-rewrite-checks>
+        [
+          {
+            "minLength": 40,
+            "pass": "You described a complete first test.",
+            "fail": "Write one or two sentences: what you call, and what you expect to observe."
+          },
+          {
+            "must": "\\b(one|single|first)\\b",
+            "pass": "You kept it to one test.",
+            "fail": "Say that this is one test, the first test, or a single test."
+          },
+          {
+            "must": "\\b(fail|fails|failing|red|before)\\b",
+            "pass": "You required the test to fail before product code.",
+            "fail": "Say that the test must fail before any product code is written."
+          },
+          {
+            "must": "don't know|do not know|i don't know|i do not know",
+            "pass": "The expected result matches the tracer.",
+            "fail": "Assert the tracer: the body or page contains “I don’t know.”"
+          },
+          {
+            "must": "\\b(post|api|page|http|endpoint|/api)\\b",
+            "pass": "You named a public place to observe it (API or page).",
+            "fail": "Name where you observe it (POST /api/ask, or the page)."
+          },
+          {
+            "must": "list|later|out of scope|not yet|not include|without |excluding",
+            "pass": "The other cases stayed on the list.",
+            "fail": "Say what is still on the list (upload, citations, history, real model)."
+          },
+          {
+            "mustNot": "suite|comprehensive|all tests|every test|full coverage|write tests for upload",
+            "pass": "You did not ask for a full suite.",
+            "fail": "A full suite is many tests at once. Write one failing check."
+          },
+          {
+            "mustNot": "notebook|colab|scratch script",
+            "pass": "This tests the product path, not a notebook.",
+            "fail": "A notebook is a prototype. Test the tracer you would keep."
+          }
+        ]
+      </script>
+    </div>
+
+    <h2>Retrieve</h2>
+    <p>Answer from memory. Do not look back at the explanations above. The two choices in each question are the same length on purpose, so length is not a hint.</p>
+
+    <div class="quiz">
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Beck: write one real test, then make it pass. A full suite first is tests of a design you have not tried yet.">
+        <p class="quiz-stem">The first move once you have a tracer is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">One failing test of the path</button>
+          <button type="button" class="choice" data-choice="1">The whole suite then the path</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Pocock: tests written in bulk check imagined behaviour. You have not observed the path yet.">
+        <p class="quiz-stem">Tests written in bulk before any code:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Check imagined behaviour</button>
+          <button type="button" class="choice" data-choice="1">Check observed behaviour</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="From lesson 0002: the notebook answers a design question. Keep the conclusion. Delete or park the notebook. It is not the product.">
+        <p class="quiz-stem">A notebook that prints one model answer is:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Throw the code, keep the lesson</button>
+          <button type="button" class="choice" data-choice="1">Keep the code, grow the product</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+    <p class="sidenote">If you missed one, that is expected. Retrieval is how the idea sticks. Re-read <a href="#one-test">one test, then code</a>, then try the questions again tomorrow rather than immediately.</p>
+
+    <h2>Read this</h2>
+    <p>Primary source: <a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD.”</a> Read the five steps. Under “Write a Test” and “Make it Pass,” read the mistakes he names. The important distinction: a test list is not a suite of written tests.</p>
+    <p>Then, because you will use coding agents: <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">Matt Pocock, “My Skill Makes Claude Code GREAT At TDD.”</a> Same one-test loop, applied to models that otherwise write the feature and the tests together. When you prompt an agent, you can use his <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a> skill and say: one failing test of this tracer, not a suite.</p>
+
+    <div class="win">
+      <h2>You should now be able to</h2>
+      <p>Look at a proposed first coding step and classify it as: code then tests (the test never failed first), a batch of tests then code (imagined behaviour), or one failing test of the path. When you prompt an agent, ask for that failing test first. Keep the <a href="../reference/one-failing-test.html">reference sheet</a> next to the next ticket you write.</p>
+    </div>
+
+    <div class="teacher">
+      <h2>Ask your teacher</h2>
+      <p>This agent is the teacher. If any part of this lesson is unclear, ask. You can paste your first-test rewrite, or a “write the feature and the tests” prompt you want checked.</p>
+    </div>
+
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Beck, K. (2023). <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a>.</li>
+      <li>Beck, K. <em>Test-Driven Development: By Example</em>. The red–green–refactor loop — cite the book when you have a copy; Canon TDD is the free stand-in.</li>
+      <li>Fowler, M. (updated 2023). <a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a>.</li>
+      <li>Pocock, M. <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">My Skill Makes Claude Code GREAT At TDD</a>. Also <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a>.</li>
+      <li>Hunt, A. &amp; Thomas, D. Interviewed by Venners, B. (2003). <a href="https://www.artima.com/articles/tracer-bullets-and-prototypes">Tracer Bullets and Prototypes</a> — the tracer from <a href="0002-tracer-not-prototype.html">lesson 0002</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      Tied to <a href="../MISSION.md">the mission</a>: a tracer you can verify, so agent-delivered software is reviewable.
+      Prior: <a href="0002-tracer-not-prototype.html">0002 — a tracer you keep, not a prototype you throw</a>.
+      Next: <a href="0004-only-enough-to-pass.html">0004 — only enough code to pass</a>.
+      Catalogue: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/slice-lab.js"></script>
+  <script src="../assets/score-rewrite.js"></script>
+</body>
+</html>

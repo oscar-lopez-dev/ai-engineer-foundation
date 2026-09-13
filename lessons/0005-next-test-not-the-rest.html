@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>0005 — The next test, not the rest of the list</title>
+  <link rel="stylesheet" href="../assets/lesson.css">
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Lesson 0005 · Engineering with coding agents</p>
+      <h1>The next test, not the rest of the list</h1>
+      <p class="lede">You already made one test pass with only enough product code. The next coding step is not the rest of the cases, and not the rest of the product. Look at the tracer you named. Write one new test of the part that still has no check. Watch it fail. Existing tests stay green.</p>
+    </header>
+
+    <p>You can already write <a href="0003-one-failing-test.html">one failing test</a>, then <a href="0004-only-enough-to-pass.html">only enough code to pass it</a>. The next skill is what happens once that test is green.</p>
+    <p>Two habits get in the way. In ticket-guided work, one passing check is treated as permission to build the rest of the feature. Coding agents do the same, and they have a second shortcut: they turn the leftover cases into a suite. In both cases you leave the loop. You no longer have one new check of observed behaviour. You have a plan to finish everything.</p>
+
+    <div class="callout">
+      <strong>Correct this</strong>
+      Wrong: the first test is green, so write the remaining tests — or build the product.<br>
+      Right: write one next failing test of the tracer you already named. Existing tests stay green. The rest of the list stays a list.
+    </div>
+
+    <p>This still serves your mission. You need to review your own work and an agent’s work against tests you can trust. If the next move is upload, the real model, and citations, those parts were never forced by a new failure. If the leftover cases became tests all at once, you are back to imagined behaviour. Either way you cannot say which part of the tracer is now safe.</p>
+
+    <h2 id="the-next-test">Go back to one test</h2>
+    <p>Kent Beck’s last step of the loop is: until the list is empty, go back to writing one concrete test. You already practised that move for the first item. The second time is the same move, with one extra duty: the tests you already had must keep passing.</p>
+    <blockquote>
+      Until the list is empty, go back to #2
+      <cite><a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD,” 2023</a> — step 5, after “Write a Test” and “Make it Pass.”</cite>
+    </blockquote>
+    <p>Which item you pick matters. Beck calls picking the next test a skill that comes with experience. You do not need that whole skill yet. The starter rule is: look at the <a href="0002-tracer-not-prototype.html">tracer you already named</a>. Which observation still has no failing test? That is next. Distant cases on the list wait.</p>
+    <p>Matt Pocock’s rule for coding agents is the same loop as a cycle: one test, one implementation, repeat. Each cycle responds to what the last cycle taught you. After a stub that returns “I don’t know,” the agent has not learned that the page works, only that the API does. The next test should ask about the page, not about upload.</p>
+    <p class="sidenote">Beck treats a later tidy-up as optional. Fowler treats skipping it as a common way to get the loop wrong. Pocock’s <code>/tdd</code> skill parks tidy-up in review, not in this cycle. That step is a later lesson. Until you have Beck’s book, <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a> is the free first-party source. <a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a>, Fowler.</p>
+
+    <figure class="diagram" aria-label="The rest of the list as tests versus one next failing test of the tracer">
+      <svg viewBox="0 0 640 250" role="img">
+        <title>Leftover cases turned into tests, beside one next failing test of the missing page</title>
+        <text x="8" y="22" fill="#5c564c" font-size="13" font-family="system-ui">The rest of the list</text>
+        <rect x="8" y="36" width="280" height="36" fill="#e4efe6" stroke="#2c5f3e"/>
+        <text x="148" y="59" text-anchor="middle" font-size="13" font-family="Georgia, serif">API stub already green</text>
+        <rect x="8" y="76" width="280" height="36" fill="#f3e4dc" stroke="#1c1916"/>
+        <text x="148" y="99" text-anchor="middle" font-size="13" font-family="Georgia, serif">upload · citations · history</text>
+        <rect x="8" y="116" width="280" height="36" fill="#e8dfd2" stroke="#1c1916"/>
+        <text x="148" y="139" text-anchor="middle" font-size="13" font-family="Georgia, serif">OpenAI errors · then implement</text>
+        <text x="148" y="190" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">tests of behaviour not yet built</text>
+        <text x="148" y="212" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">or: the rest of the product</text>
+
+        <text x="340" y="22" fill="#5c564c" font-size="13" font-family="system-ui">The next test</text>
+        <rect x="340" y="36" width="280" height="48" fill="#e4efe6" stroke="#2c5f3e"/>
+        <text x="480" y="66" text-anchor="middle" font-size="14" font-family="Georgia, serif">same API test, still green</text>
+        <rect x="340" y="84" width="280" height="72" fill="#a63d2f" fill-opacity="0.28" stroke="#a63d2f" stroke-width="2"/>
+        <text x="480" y="118" text-anchor="middle" font-size="14" font-family="Georgia, serif">page shows “I don’t know”</text>
+        <text x="480" y="140" text-anchor="middle" font-size="13" font-family="Georgia, serif">one new failing check</text>
+        <text x="480" y="190" text-anchor="middle" fill="#a63d2f" font-size="12" font-family="system-ui">the missing piece of the tracer</text>
+        <text x="480" y="212" text-anchor="middle" fill="#5c564c" font-size="12" font-family="system-ui">upload and the model stay on the list</text>
+      </svg>
+      <figcaption>The green band is the pass you already have. The red band is the next check. Everything else is still a note.</figcaption>
+    </figure>
+
+    <h2>Handbook Ask, three ways to continue</h2>
+    <p>You have watched <code>POST /api/ask</code> fail, then pass with a stub that returns “I don’t know.” The <a href="0002-tracer-not-prototype.html">tracer</a> was: an employee pastes a question about the one PDF in SQL and sees “I don’t know” on the real page. The API test did not force the page. Compare three ways to continue:</p>
+    <ol>
+      <li>Write tests for upload, citations, history, and OpenAI errors. Then implement until they pass.</li>
+      <li>Wire OpenAI, add upload and citations. The stub test is green, so the path is “proven.”</li>
+      <li>Write one new test: submitting a question on the page shows “I don’t know.” Run it and confirm it fails. The existing API test stays green. Then write only enough UI to make the new test pass.</li>
+    </ol>
+    <p>Option 1 is the mistake from <a href="0003-one-failing-test.html">lesson 0003</a>, arriving one cycle later. The leftover cases are still a list. Turning them into tests now checks imagined behaviour again. An agent short of context may change those tests instead of growing the path.</p>
+    <p>Option 2 is the mistake from <a href="0004-only-enough-to-pass.html">lesson 0004</a>, arriving one cycle later. The first test never asked for upload or the real model. You have not observed the page. An agent that does this will look busy and still leave you unable to say what is safe.</p>
+    <p>Option 3 is the loop for this lesson. The tracer named the page. The page still has no failing test. That is the next item. Auth, SQL, upload, citations, and the real model stay on the list unless this new test fails without them.</p>
+    <pre>[Fact]
+public async Task Ask_page_shows_i_dont_know()
+{
+    var page = await client.GetAsync("/");
+    // submit the question on the page; read the result
+    Assert.Contains("I don't know", body);
+}</pre>
+    <p>The existing API test does not change. If the new test fails because there is no page yet, that is a real failure. After you add a thin page that posts to the stub and shows the answer, the new test should pass, and so should the old one. The <a href="0002-tracer-not-prototype.html">stub from lesson 0002</a> is still allowed: this test does not require the real model.</p>
+    <p class="sidenote"><a href="../reference/next-failing-test.html">Reference: the next failing test</a> · <a href="../reference/only-enough-to-pass.html">only enough to pass</a> · <a href="../reference/glossary.html">glossary</a>.</p>
+
+    <h2>Practice: classify</h2>
+    <p>For each way of continuing after the first pass, choose whether it is the rest of the list as tests, the rest of the feature, or the next failing test. You will get feedback immediately.</p>
+
+    <div class="lab">
+      <div class="lab-card" data-classify data-kind="restlist" data-why="Beck: do not turn the leftover items into tests at once. The extra cases should stay on the list. Write one next test of the tracer you already named.">
+        <p class="lab-prompt">The stub test is green. Write tests for upload, citations, history, and OpenAI errors. Then implement until they pass.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="restlist">The rest of the list</button>
+          <button type="button" class="kind" data-kind="restfeat">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="next">The next failing test</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="restfeat" data-why="The first test never asked for OpenAI or upload. Those parts were never forced by a new failure. Implement them when they have their own failing test.">
+        <p class="lab-prompt">The stub test is green. Wire OpenAI, add upload and citations, and ship the “real” path.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="restlist">The rest of the list</button>
+          <button type="button" class="kind" data-kind="restfeat">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="next">The next failing test</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="next" data-why="The tracer named the page. The page still has no failing test. That is next. The existing API test stays green. Upload stays on the list.">
+        <p class="lab-prompt">The stub test is green. One new test: the page shows “I don’t know” after submit. Confirm it fails. Leave upload on the list.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="restlist">The rest of the list</button>
+          <button type="button" class="kind" data-kind="restfeat">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="next">The next failing test</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="lab-card" data-classify data-kind="next" data-why="A scratch list is still notes. Auth, empty input, and the page are on it. Turn only the missing piece of the tracer — the page — into the next real test.">
+        <p class="lab-prompt">Scratch list: page, unauthenticated, empty question. Turn only “page shows I don’t know” into a failing test. Existing tests stay green.</p>
+        <div class="choices">
+          <button type="button" class="kind" data-kind="restlist">The rest of the list</button>
+          <button type="button" class="kind" data-kind="restfeat">The rest of the feature</button>
+          <button type="button" class="kind" data-kind="next">The next failing test</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+
+    <h2>Practice: write the next test</h2>
+    <p>Here is a prompt you might still give an agent after lesson 0004:</p>
+    <p><em>The stub test is green. Write tests for upload, citations, and OpenAI errors, then implement them.</em></p>
+    <p>Rewrite it so the agent is asked for <em>one next failing test of the tracer</em>. Name the missing piece (the page). Say that existing tests must stay green. The new test must fail before more product code. Say which cases stay on the list.</p>
+
+    <div class="lab-rewrite" data-score-rewrite>
+      <textarea class="rewrite" placeholder="Next failing test: the page shows … Existing tests stay green. Do not implement yet. Still on the list: …"></textarea>
+      <button type="button" class="primary">Check the next test</button>
+      <ul class="checks"></ul>
+      <script type="application/json" data-rewrite-checks>
+        [
+          {
+            "minLength": 40,
+            "pass": "You described a complete next test.",
+            "fail": "Write one or two sentences: what new check to write, and what to leave alone."
+          },
+          {
+            "must": "\\b(one|single|next|another|second)\\b",
+            "pass": "You kept it to one next test.",
+            "fail": "Say that this is one test, the next test, or a single new test."
+          },
+          {
+            "must": "\\b(fail|fails|failing|red|before)\\b",
+            "pass": "You required the new test to fail first.",
+            "fail": "Say that the new test must fail before more product code is written."
+          },
+          {
+            "must": "\\b(page|ui|form|submit)\\b",
+            "pass": "You named the missing piece of the tracer (the page).",
+            "fail": "The tracer named the page. Ask for a failing test of the page."
+          },
+          {
+            "must": "don't know|do not know|i don't know|i do not know",
+            "pass": "The expected result still matches the tracer.",
+            "fail": "Assert the tracer: the page shows “I don’t know.”"
+          },
+          {
+            "must": "existing tests|previous tests|earlier tests|stay green|keep passing|still pass|first test unchanged|do not edit",
+            "pass": "You kept the tests you already had.",
+            "fail": "Say that existing tests stay green (or keep passing)."
+          },
+          {
+            "must": "list|later|out of scope|not yet|not implement|leave .* on|still on",
+            "pass": "The other cases stayed on the list.",
+            "fail": "Say what is still on the list (upload, citations, real model) and is not implemented yet."
+          },
+          {
+            "mustNot": "suite|comprehensive|all tests|every test|full coverage",
+            "pass": "You did not ask for a full suite.",
+            "fail": "A full suite is many tests at once. Write one next failing check."
+          },
+          {
+            "mustNot": "notebook|colab|scratch script",
+            "pass": "This next test is on the product path, not a notebook.",
+            "fail": "A notebook is a prototype. Test the tracer you would keep."
+          }
+        ]
+      </script>
+    </div>
+
+    <h2>Retrieve</h2>
+    <p>Answer from memory. Do not look back at the explanations above. The two choices in each question are the same length on purpose, so length is not a hint.</p>
+
+    <div class="quiz">
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Beck: until the list is empty, go back to writing one test. Pocock: one test, one implementation, repeat. The leftover cases stay a list.">
+        <p class="quiz-stem">Once the first test is green, write:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">One next failing test</button>
+          <button type="button" class="choice" data-choice="1">All leftover tests now</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Beck: change the code so the new test passes, along with any tests you already had. Earlier checks stay honest.">
+        <p class="quiz-stem">While you write the next failing test, earlier tests should:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">Keep passing as they did</button>
+          <button type="button" class="choice" data-choice="1">Be rewritten for the next</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+      <div class="quiz-item" data-quiz-item data-correct="0" data-why="Starter rule: pick the next missing piece of the tracer you already named. The tracer named the page. Upload and the real model are still on the list.">
+        <p class="quiz-stem">The next Handbook Ask test should first cover:</p>
+        <div class="choices">
+          <button type="button" class="choice" data-choice="0">The page the tracer named</button>
+          <button type="button" class="choice" data-choice="1">Upload and the real model</button>
+        </div>
+        <p class="feedback"></p>
+      </div>
+    </div>
+    <p class="sidenote">If you missed one, that is expected. Retrieval is how the idea sticks. Re-read <a href="#the-next-test">go back to one test</a>, then try the questions again tomorrow rather than immediately.</p>
+
+    <h2>Read this</h2>
+    <p>Primary source: <a href="https://newsletter.kentbeck.com/p/canon-tdd">Kent Beck, “Canon TDD.”</a> Read step 5, “Until the list is empty, go back to #2,” and the note that picking the next test is a skill. The important distinction: the leftover cases are still a list, not a suite.</p>
+    <p>Then, because you will use coding agents: <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">Matt Pocock, “My Skill Makes Claude Code GREAT At TDD.”</a> Same cycle, applied to models that otherwise write remaining tests in a batch, or implement the rest of the feature, once the first check is green. When you prompt an agent, you can use his <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a> skill and say: one next failing test of this tracer; existing tests stay green; do not implement the list.</p>
+
+    <div class="win">
+      <h2>You should now be able to</h2>
+      <p>Look at a proposed next step after one pass and classify it as: the rest of the list as tests, the rest of the feature, or one next failing test of the tracer you named. When you prompt an agent, ask for that one new failure, keep earlier tests green, and leave the other cases on the list. Keep the <a href="../reference/next-failing-test.html">reference sheet</a> next to the next ticket you write.</p>
+    </div>
+
+    <div class="teacher">
+      <h2>Ask your teacher</h2>
+      <p>This agent is the teacher. If any part of this lesson is unclear, ask. You can paste your next-test rewrite, or a “the stub is green, now finish it” prompt you want checked.</p>
+    </div>
+
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Beck, K. (2023). <a href="https://newsletter.kentbeck.com/p/canon-tdd">Canon TDD</a> — especially step 5, “Until the list is empty, go back to #2.”</li>
+      <li>Beck, K. <em>Test-Driven Development: By Example</em>. The red–green–refactor loop — cite the book when you have a copy; Canon TDD is the free stand-in.</li>
+      <li>Fowler, M. (updated 2023). <a href="https://martinfowler.com/bliki/TestDrivenDevelopment.html">Test Driven Development</a> — pick one test, then the next; sequencing is a later skill. Skipping tidy-up is a common failure; that step is later.</li>
+      <li>Pocock, M. <a href="https://www.aihero.dev/skill-test-driven-development-claude-code">My Skill Makes Claude Code GREAT At TDD</a>. Also <a href="https://github.com/mattpocock/skills/blob/main/skills/engineering/tdd/SKILL.md"><code>/tdd</code></a>.</li>
+      <li>The tracer is from <a href="0002-tracer-not-prototype.html">lesson 0002</a>. The first failing test is from <a href="0003-one-failing-test.html">lesson 0003</a>. The stub pass is from <a href="0004-only-enough-to-pass.html">lesson 0004</a>.</li>
+    </ol>
+
+    <footer class="meta">
+      Tied to <a href="../MISSION.md">the mission</a>: a tracer you thicken one observed check at a time, so agent-delivered software is reviewable.
+      Prior: <a href="0004-only-enough-to-pass.html">0004 — only enough code to pass</a>.
+      Catalogue: <a href="../RESOURCES.md">RESOURCES.md</a>.
+    </footer>
+  </article>
+  <script src="../assets/quiz.js"></script>
+  <script src="../assets/slice-lab.js"></script>
+  <script src="../assets/score-rewrite.js"></script>
+</body>
+</html>
