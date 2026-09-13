@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AI Engineer Foundation — Lessons, Reference & Labs Showcase</title>
+  <link rel="stylesheet" href="assets/lesson.css">
+  <style>
+    .catalog-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin: 1.4rem 0 2rem;
+      max-width: var(--measure);
+    }
+    .catalog-item {
+      background: var(--card);
+      border: 1px solid var(--rule);
+      padding: 1.1rem 1.25rem;
+      transition: border-color 0.15s ease;
+    }
+    .catalog-item:hover {
+      border-color: var(--mark);
+    }
+    .catalog-item .item-meta {
+      font-family: var(--sans);
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mark);
+      margin-bottom: 0.35rem;
+    }
+    .catalog-item h3 {
+      margin: 0 0 0.4rem;
+      font-size: 1.08rem;
+      font-family: var(--serif);
+      text-transform: none;
+      letter-spacing: normal;
+    }
+    .catalog-item h3 a {
+      text-decoration: none;
+      color: var(--ink);
+    }
+    .catalog-item h3 a:hover {
+      color: var(--mark);
+    }
+    .catalog-item p {
+      font-size: 0.92rem;
+      color: var(--muted);
+      margin: 0;
+      line-height: 1.45;
+    }
+    .badge-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1.2rem 0;
+      font-family: var(--sans);
+      font-size: 0.78rem;
+    }
+    .badge {
+      background: var(--mark-soft);
+      color: var(--ink);
+      padding: 0.2rem 0.55rem;
+      border: 1px solid var(--rule);
+    }
+    .badge.stack {
+      background: var(--ok-soft);
+      border-color: var(--ok);
+      color: var(--ok);
+    }
+    .nav-tabs {
+      display: flex;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 0.6rem;
+      margin: 2rem 0 1.5rem;
+      font-family: var(--sans);
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .nav-tabs a {
+      color: var(--muted);
+      text-decoration: none;
+    }
+    .nav-tabs a:hover {
+      color: var(--mark);
+    }
+  </style>
+</head>
+<body>
+  <article class="page">
+    <header class="mast">
+      <p class="kicker">Learning Workspace · Matt Pocock Skills & Engineering Foundations</p>
+      <h1>AI Engineer Foundation</h1>
+      <p class="lede">Foundations, interactive lessons, reference sheets, and practical showcase labs to direct, review, and ship AI-enabled web products with coding agents.</p>
+
+      <div class="badge-bar">
+        <span class="badge stack">Target Stack: .NET Core / C#</span>
+        <span class="badge stack">TypeScript / React / Next.js</span>
+        <span class="badge stack">SQL & Relational DBs</span>
+        <span class="badge stack">Python</span>
+        <span class="badge">Running Product: Handbook Ask</span>
+      </div>
+    </header>
+
+    <div class="callout">
+      <strong>Mission Stance</strong>
+      Move from ticket-guided implementation to independently designing, building, testing, deploying, and operating verifiable AI-enabled web systems. Foundations prioritize what to demand, what to reject, and how to rigorously review agent-generated output.
+    </div>
+
+    <nav class="nav-tabs">
+      <a href="#lessons">Lessons (Theory & Principles)</a>
+      <a href="#reference">Reference Sheets</a>
+      <a href="#labs">Practical Labs Showcase</a>
+      <a href="#records">Learning Records</a>
+    </nav>
+
+    <h2 id="lessons">1. Interactive Lessons</h2>
+    <p>Units of foundational judgment taught through lightweight, interactive HTML documents (Tufte-inspired typography, light mental-model checks, cited primary sources).</p>
+
+    <div class="catalog-grid">
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0001 · Foundation</div>
+        <h3><a href="lessons/0001-vertical-slice-not-layer.html">A vertical slice, not a layer</a></h3>
+        <p>The unit of work is a thin path a user can walk, not an isolated table, endpoint, or component. Eliminates agent-generated technical layers that fail to integrate.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0002 · Foundation</div>
+        <h3><a href="lessons/0002-tracer-not-prototype.html">A tracer, not a prototype</a></h3>
+        <p>Distinguish throwaway prototypes (answering an isolated feasibility question) from enduring tracer bullets (real, thin, end-to-end production path you keep).</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0003 · TDD Foundation</div>
+        <h3><a href="lessons/0003-one-failing-test.html">One failing test</a></h3>
+        <p>Writing one test first versus bulk suites or code-then-test. How to scope agent prompts to exactly one failing assertion before product code.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0004 · TDD Foundation</div>
+        <h3><a href="lessons/0004-only-enough-to-pass.html">Only enough to pass</a></h3>
+        <p>Write strictly the minimal production code needed to turn the failing test green, rejecting premature abstractions and speculative features.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0005 · TDD Foundation</div>
+        <h3><a href="lessons/0005-next-test-not-the-rest.html">Next test, not the rest</a></h3>
+        <p>How to sequence tests one move at a time, incrementally illuminating the system's edge cases without losing the feedback loop.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lesson 0006 · Review & Acceptance Criteria</div>
+        <h3><a href="lessons/0006-criteria-that-can-fail.html">Criteria that can fail</a></h3>
+        <p>A criterion is only reviewable if it is falsifiable. The gate question: "What would I observe if this were false?" Translates fuzzy requirements into binary gates.</p>
+      </div>
+    </div>
+
+    <h2 id="reference">2. Reference Sheets & Cheat Sheets</h2>
+    <p>Distilled, high-density reference documents designed for quick consultation while engineering or instructing agents.</p>
+
+    <div class="catalog-grid">
+      <div class="catalog-item">
+        <div class="item-meta">Reference · Core Pattern</div>
+        <h3><a href="reference/vertical-slice.html">Vertical Slice Architecture & Slicing</a></h3>
+        <p>INVEST criteria, architectural boundaries, horizontal vs vertical decomposition rules.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · Core Pattern</div>
+        <h3><a href="reference/tracer-bullet.html">Tracer Bullets in Practice</a></h3>
+        <p>End-to-end architecture validation: UI &rarr; API &rarr; Database &rarr; AI with mocked/stubbed models.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · TDD Cycle</div>
+        <h3><a href="reference/one-failing-test.html">One Failing Test Protocol</a></h3>
+        <p>Prompt templates for agents, test sizing rules, and avoiding phantom greens.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · TDD Cycle</div>
+        <h3><a href="reference/only-enough-to-pass.html">Minimal Implementation Rules</a></h3>
+        <p>Fake it, triangulate, and resisting the urge to over-engineer in the green phase.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · TDD Cycle</div>
+        <h3><a href="reference/next-failing-test.html">Test Sequencing Compass</a></h3>
+        <p>Decision tree for choosing the next test step based on current system state.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · Quality Gate</div>
+        <h3><a href="reference/acceptance-criteria.html">Falsifiable Acceptance Criteria</a></h3>
+        <p>Observable criteria checklist, conversion table from fuzzy requests to binary gates.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Reference · Lexicon</div>
+        <h3><a href="reference/glossary.html">Domain & Agent Engineering Glossary</a></h3>
+        <p>Canonical vocabulary (tracer, slice, slop, smart zone, seam, adapter, gate).</p>
+      </div>
+    </div>
+
+    <h2 id="labs">3. Practical Labs Showcase (`labs/`)</h2>
+    <p>Concrete codebases in the target stack (.NET Core, Next.js / TypeScript, SQL, Python) demonstrating the lessons in action around the <strong>Handbook Ask</strong> product.</p>
+
+    <div class="catalog-grid">
+      <div class="catalog-item">
+        <div class="item-meta">Lab 01 · Vertical Slice</div>
+        <h3><a href="labs/01-vertical-slice/README.md">Handbook Ask: Minimal Policy Lookup Slice</a></h3>
+        <p>A complete vertical slice through React frontend, ASP.NET Core Minimal API, and SQLite query showing an end-to-end user path rather than disconnected layers.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lab 02 · Tracer Bullet</div>
+        <h3><a href="labs/02-tracer-bullet/README.md">End-to-End Tracer with Deterministic AI Stub</a></h3>
+        <p>Real UI &rarr; API &rarr; Retrieval flow with a stubbed LLM client, demonstrating an enduring tracer bullet that validates infrastructure without model flakiness.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lab 03 &amp; 04 · TDD Micro-Cycles</div>
+        <h3><a href="labs/03-tdd-cycles/README.md">xUnit &amp; Vitest TDD Kata on Citations Extraction</a></h3>
+        <p>Step-by-step git commit history showing one failing test at a time and strictly minimal code to pass.</p>
+      </div>
+
+      <div class="catalog-item">
+        <div class="item-meta">Lab 06 · Reviewable Criteria</div>
+        <h3><a href="labs/06-falsifiable-specs/README.md">Falsifiable Acceptance Test Suite</a></h3>
+        <p>Integration tests written directly from acceptance criteria where every assertion has a demonstrable failure mode.</p>
+      </div>
+    </div>
+
+    <h2 id="records">4. Learning Records & Architecture Decisions</h2>
+    <p>Chronological records of cognitive shifts, mental model revisions, and engineering decisions:</p>
+    <ul>
+      <li><a href="https://github.com/oscarlopez1991/ai-engineer-foundation/tree/main/learning-records">Learning Records Directory</a> (0001 &ndash; 0009)</li>
+      <li><a href="https://github.com/oscarlopez1991/ai-engineer-foundation/tree/main/docs/adr">Architecture Decision Records (ADRs)</a></li>
+      <li><a href="ROADMAP.md">Foundations Roadmap (Stages A through I)</a></li>
+    </ul>
+
+    <footer class="meta">
+      <p>AI Engineer Foundation · Maintained by <a href="https://github.com/oscarlopez1991">Oscar López</a> · Powered by Matt Pocock Skills &amp; Antigravity</p>
+    </footer>
+  </article>
+</body>
+</html>
