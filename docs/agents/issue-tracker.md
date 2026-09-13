@@ -13,6 +13,24 @@ Issues and specs for this repo live as GitHub issues. Use the `gh` CLI for all o
 
 Infer the repo from `git remote -v` — `gh` does this automatically when run inside a clone.
 
+## Project Integration: Global Dev Hub
+
+All issues created in this repo (foundations study, deliberate practice challenges, agent tasks) belong to:
+- **Project URL**: `https://github.com/users/oscarlopez1991/projects/2`
+- **Project Number**: `2` (`oscarlopez1991`)
+- **Project ID**: `PVT_kwHOApEh784BjSPL`
+- **Status Field ID**: `PVTSSF_lAHOApEh784BjSPLzhiHJW4`
+  - `Todo` Option ID: `61e4505c`
+  - `In progress` Option ID: `47fc9ee4`
+  - `Done` Option ID: `98236657`
+
+### When publishing an issue:
+Add it immediately to Project 2 and mark as `Todo`:
+```bash
+ITEM_ID=$(gh project item-add 2 --owner oscarlopez1991 --url "$ISSUE_URL" --format json --jq .id)
+gh project item-edit --id "$ITEM_ID" --project-id PVT_kwHOApEh784BjSPL --field-id PVTSSF_lAHOApEh784BjSPLzhiHJW4 --single-select-option-id 61e4505c
+```
+
 ## Pull requests as a triage surface
 
 **PRs as a request surface: no.** _(Set to `yes` if this repo treats external PRs as feature requests; `/triage` reads this flag.)_
