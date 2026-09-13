@@ -6,7 +6,8 @@ Learning workspace and showcase for Full-stack AI Engineering foundations.
 
 ### Issue tracker
 
-GitHub issues tracked via the `gh` CLI. See `docs/agents/issue-tracker.md`.
+GitHub issues tracked at `oscarlopez1991/ai-engineer-foundation` via the `gh` CLI.
+**Auto-add rule**: Whenever an issue is published, it MUST be immediately added to Global Dev Hub (Project #2: `https://github.com/users/oscarlopez1991/projects/2`). See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 
